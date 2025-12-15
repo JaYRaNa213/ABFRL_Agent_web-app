@@ -119,14 +119,14 @@ export default function ChatWindow() {
           boxShadow: "none",
           borderBottom: "1px solid var(--border-glass)"
         }}>
-        <Toolbar sx={{ height: 70 }}>
+        <Toolbar sx={{ height: { xs: 60, md: 70 }, px: { xs: 1, md: 3 } }}>
           <IconButton edge="start" sx={{ color: "var(--text-light)", mr: 2 }}>
             <MenuRoundedIcon />
           </IconButton>
 
           <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center", gap: 1.5 }}>
             <Avatar sx={{ bgcolor: "var(--accent-gold)", width: 32, height: 32, fontSize: 16, fontWeight: "bold" }}>A</Avatar>
-            <Typography variant="h6" sx={{ fontFamily: "'Playfair Display', serif",color: "var(--accent-gold)", fontWeight: 600, letterSpacing: 0.5 }}>
+            <Typography variant="h6" sx={{ fontFamily: "'Playfair Display', serif", color: "var(--accent-gold)", fontWeight: 600, letterSpacing: 0.5 }}>
               ABFRL <span style={{ color: "var(--accent-gold)", fontWeight: 300 }}>Assistant</span>
             </Typography>
           </Box>
@@ -140,8 +140,8 @@ export default function ChatWindow() {
       </AppBar>
 
       {/* Chat Canvas */}
-      <Container maxWidth="md" sx={{ flexGrow: 1, overflow: "hidden", display: "flex", flexDirection: "column", py: 3 }}>
-        <Box sx={{ flexGrow: 1, overflowY: "auto", px: 2, display: "flex", flexDirection: "column", gap: 2 }}>
+      <Container maxWidth="md" sx={{ flexGrow: 1, overflow: "hidden", display: "flex", flexDirection: "column", py: { xs: 1, md: 3 }, px: { xs: 1, md: 2 } }}>
+        <Box sx={{ flexGrow: 1, overflowY: "auto", px: { xs: 1, md: 2 }, display: "flex", flexDirection: "column", gap: 2 }}>
           {messages.map((msg, idx) => (
             <React.Fragment key={idx}>
               {msg.type === "product" ? (
@@ -172,8 +172,8 @@ export default function ChatWindow() {
           <Box sx={{
             display: "flex",
             alignItems: "center",
-            gap: 2,
-            p: 1.5,
+            gap: { xs: 1, md: 2 },
+            p: { xs: 1, md: 1.5 },
             borderRadius: "50px",
             bgcolor: "var(--ey-gray-dark)",
             border: "1px solid var(--ey-border)",
@@ -187,8 +187,8 @@ export default function ChatWindow() {
                 color: isListening ? "black" : "var(--ey-yellow)",
                 border: "2px solid",
                 borderColor: isListening ? "transparent" : "var(--ey-yellow)",
-                width: 64,
-                height: 64,
+                width: { xs: 48, md: 64 },
+                height: { xs: 48, md: 64 },
                 transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                 animation: isListening ? "pulse-yellow 1.5s infinite" : "none",
                 "&:hover": {
@@ -199,7 +199,7 @@ export default function ChatWindow() {
                 }
               }}
             >
-              {isListening ? <GraphicEqIcon sx={{ fontSize: 32 }} /> : <MicIcon sx={{ fontSize: 32 }} />}
+              {isListening ? <GraphicEqIcon sx={{ fontSize: { xs: 24, md: 32 } }} /> : <MicIcon sx={{ fontSize: { xs: 24, md: 32 } }} />}
             </IconButton>
 
             <Box sx={{ flexGrow: 1 }}>

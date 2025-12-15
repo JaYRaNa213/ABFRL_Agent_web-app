@@ -3,13 +3,13 @@ import { Box, Typography, Button, Card, CardMedia, CardContent, CardActions } fr
 
 export default function ProductCard({ product, onAddToCart }) {
   return (
-    <Card sx={{ maxWidth: 280, m: 1, borderRadius: 3, boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
+    <Card sx={{ maxWidth: { xs: "100%", sm: 280 }, width: { xs: "100%", sm: "auto" }, m: 1, borderRadius: 3, boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
       <CardMedia
         component="img"
         height="200"
         image={product.image || "https://via.placeholder.com/200"} // Fallback image
         alt={product.name}
-        sx={{ objectFit: "cover" }}
+        sx={{ objectFit: "cover", height: { xs: 150, sm: 200 } }}
       />
       <CardContent sx={{ pb: 1 }}>
         <Typography gutterBottom variant="h6" component="div" sx={{ fontSize: "1rem", fontWeight: 600 }}>
