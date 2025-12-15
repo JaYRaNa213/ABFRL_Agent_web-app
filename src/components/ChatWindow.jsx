@@ -9,19 +9,27 @@ import UserInput from "./UserInput.jsx";
 import ProductCard from "./ProductCard.jsx";
 import CartDrawer from "./CartDrawer.jsx";
 import { useSession } from "../context/SessionContext.jsx";
-import { VoiceAdapter } from "../channels/voice.adapter.js";
 import { WebAdapter } from "../channels/web.adapter.js";
 import { WhatsAppAdapter } from "../channels/whatsapp.adapter.js";
 import { KioskAdapter } from "../channels/kiosk.adapter.js";
+import LanguageSelector from "./LanguageSelector.jsx";
+import { useVoiceRecognition } from "../hooks/useVoiceRecognition.js";
+import { speak } from "../utils/speak.js";
 
 export default function ChatWindow() {
   const { sessionId, channel } = useSession();
   const [messages, setMessages] = useState([{ role: "agent", message: "Welcome to ABFRL! I'm your personal shopping assistant. How can I distinguish your style today?" }]);
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [voiceAdapter, setVoiceAdapter] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [language, setLanguage] = useState("en-IN");
+
+  const languageRef = useRef(language);
+
+  useEffect(() => {
+    languageRef.current = language;
+  }, [language]);
 
   const adaptersRef = useRef({});
   const messagesEndRef = useRef(null);
@@ -40,7 +48,7 @@ export default function ChatWindow() {
 
       if (response.reply) {
         setMessages((prev) => [...prev, { role: "agent", message: response.reply }]);
-        voiceAdapter?.speak(response.reply);
+        speak(response.reply, languageRef.current);
       }
 
       if (response.cart) {
@@ -77,35 +85,32 @@ export default function ChatWindow() {
     };
     fetchHistory();
 
-    const vAdapter = new VoiceAdapter(
-      (text) => { // onTranscription
-        setIsListening(false);
-        handleSend(text);
-      },
-      (text) => console.log("Agent speaking:", text) // onResponse
-    );
-    setVoiceAdapter(vAdapter);
+    fetchHistory();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const sendToAdapter = async (text) => {
+  const recognition = useVoiceRecognition(language, (text) => handleSend(text, "voice"));
+
+  const sendToAdapter = async (text, channelOverride) => {
     setIsTyping(true);
     const currentAdapter = adaptersRef.current[channel] || adaptersRef.current.web;
-    await currentAdapter.send(text, sessionId);
+    await currentAdapter.send(text, sessionId, { language, channel: channelOverride || channel });
   };
 
-  const handleSend = async (text) => {
+  const handleSend = async (text, channelOverride) => {
     if (!text) return;
     setMessages((prev) => [...prev, { role: "user", message: text }]);
-    await sendToAdapter(text);
+    await sendToAdapter(text, channelOverride);
   };
 
   const toggleListening = () => {
     if (isListening) {
-      voiceAdapter?.stopListening();
+      if (recognition) recognition.stop();
       setIsListening(false);
     } else {
-      voiceAdapter?.startListening();
-      setIsListening(true);
+      if (recognition) {
+        setIsListening(true);
+        recognition.start();
+      }
     }
   };
 
@@ -129,6 +134,7 @@ export default function ChatWindow() {
             <Typography variant="h6" sx={{ fontFamily: "'Playfair Display', serif", color: "var(--accent-gold)", fontWeight: 600, letterSpacing: 0.5 }}>
               ABFRL <span style={{ color: "var(--accent-gold)", fontWeight: 300 }}>Assistant</span>
             </Typography>
+            <LanguageSelector language={language} setLanguage={setLanguage} />
           </Box>
 
           <IconButton onClick={() => setIsCartOpen(true)} sx={{ color: "var(--text-light)" }}>

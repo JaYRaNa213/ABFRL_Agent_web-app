@@ -8,8 +8,9 @@ export class WebAdapter {
     this.onReceive = onReceive;
   }
 
-  async send(text, sessionId) {
-    const response = await sendMessage(text, sessionId, "web");
+  async send(text, sessionId, options = {}) {
+    const { language, channel } = options;
+    const response = await sendMessage(text, sessionId, channel || "web", language);
     this.onReceive(response);
   }
 
