@@ -23,16 +23,18 @@ export default function ProductCard({ product, onAddToCart }) {
         </Typography>
       </CardContent>
       <CardActions sx={{ p: 2, pt: 0 }}>
-        <Button 
-          size="small" 
-          variant="contained" 
-          fullWidth 
+        <Button
+          size="small"
+          variant="contained"
+          fullWidth
           onClick={() => onAddToCart(product)}
-          sx={{ 
-            bgcolor: "var(--primary-color)", 
-            "&:hover": { bgcolor: "#1e293b" },
+          sx={{
+            bgcolor: "var(--ey-yellow)",
+            color: "black",
+            "&:hover": { bgcolor: "var(--accent-gold-hover)" },
             textTransform: "none",
-            borderRadius: 2
+            borderRadius: 2,
+            fontWeight: "bold"
           }}
         >
           Add to Cart

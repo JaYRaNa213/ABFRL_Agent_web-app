@@ -55,9 +55,9 @@ export default function CartDrawer({ open, onClose, cart, onCheckout }) {
                     disabled={cart.length === 0}
                     onClick={onCheckout}
                     sx={{
-                        bgcolor: "var(--secondary-color)",
+                        bgcolor: "var(--ey-yellow)",
                         color: "#000",
-                        "&:hover": { bgcolor: "#bfa130" },
+                        "&:hover": { bgcolor: "var(--accent-gold-hover)" },
                         fontWeight: "bold"
                     }}
                 >

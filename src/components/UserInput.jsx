@@ -13,31 +13,41 @@ export default function UserInput({ onSend }) {
 
   return (
     <Paper
-      elevation={3}
+      elevation={0}
       sx={{
         p: "2px 4px",
         display: "flex",
         alignItems: "center",
         width: "100%",
         borderRadius: 50,
-        border: "6px solid #295ead20",
-        boxShadow: "0 6px 50px rgba(0, 0, 0, 0.87)"
+        bgcolor: "transparent",
+        border: "none",
+        boxShadow: "none"
       }}
     >
       <TextField
-      text-color="red"
-        sx={{ ml: 1, flex: 1 }}
-        placeholder="Type your message..."
+        fullWidth
+        sx={{
+          ml: 1,
+          flex: 1,
+          "& input": { color: "var(--ey-white)", fontSize: "1rem" },
+          "& ::placeholder": { color: "var(--ey-gray-muted) !important", opacity: 1 }
+        }}
+        placeholder="Type a message..."
         variant="standard"
         InputProps={{ disableUnderline: true }}
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && handleSend()}
       />
+
       <IconButton
-        color="primary"
-        sx={{ p: "10px", color: "var(--primary-color)" }}
         onClick={handleSend}
+        disabled={!text.trim()}
+        sx={{
+          color: "var(--ey-yellow)",
+          "&:disabled": { color: "rgba(255, 255, 255, 0.1)" }
+        }}
       >
         <SendRoundedIcon />
       </IconButton>

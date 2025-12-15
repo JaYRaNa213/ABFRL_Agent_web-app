@@ -62,6 +62,21 @@ export default function ChatWindow() {
       kiosk: new KioskAdapter(handleAgentReply),
     };
 
+    // Restore History
+    const fetchHistory = async () => {
+      const history = await adaptersRef.current.web.getHistory(sessionId);
+      if (history.conversationHistory && history.conversationHistory.length > 0) {
+        setMessages(
+          history.conversationHistory.map((h) => ({
+            role: h.role,
+            message: h.message
+          }))
+        );
+      }
+      if (history.cart) setCart(history.cart);
+    };
+    fetchHistory();
+
     const vAdapter = new VoiceAdapter(
       (text) => { // onTranscription
         setIsListening(false);
@@ -160,8 +175,8 @@ export default function ChatWindow() {
             gap: 2,
             p: 1.5,
             borderRadius: "50px",
-            bgcolor: "var(--primary-light)",
-            border: "1px solid var(--border-glass)",
+            bgcolor: "var(--ey-gray-dark)",
+            border: "1px solid var(--ey-border)",
             boxShadow: "var(--shadow-card)"
           }}>
             {/* Big Visible Mic Button */}

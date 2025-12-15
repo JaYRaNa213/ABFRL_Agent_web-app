@@ -38,7 +38,7 @@ export default function MessageBubble({ message, role }) {
       </Paper>
 
       {isUser && (
-        <Avatar sx={{ bgcolor: "var(--accent-color)", width: 32, height: 32 }}>
+        <Avatar sx={{ bgcolor: "var(--ey-gray-medium)", color: "var(--ey-white)", width: 32, height: 32 }}>
           <PersonIcon fontSize="small" />
         </Avatar>
       )}

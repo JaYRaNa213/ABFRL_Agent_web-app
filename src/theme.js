@@ -3,19 +3,21 @@ import { createTheme } from "@mui/material/styles";
 export const theme = createTheme({
     palette: {
         primary: {
-            main: "#0f172a", // Deep Navy
+            main: "#FFE600", // EY Yellow
+            contrastText: "#000000",
         },
         secondary: {
-            main: "#d4af37", // Champagne Gold
+            main: "#000000", // Black
         },
         background: {
-            default: "#f8fafc",
-            paper: "#ffffff",
+            default: "#000000", // Black background
+            paper: "#2E2E2E",   // Medium Gray for cards
         },
         text: {
-            primary: "#1e293b",
-            secondary: "#64748b",
+            primary: "#FFFFFF", // White text
+            secondary: "#B3B3B3", // Muted Gray
         },
+        divider: "rgba(255, 255, 255, 0.08)", // EY Border
     },
     typography: {
         fontFamily: "'Inter', sans-serif",
