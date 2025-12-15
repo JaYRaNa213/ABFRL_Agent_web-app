@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Box, IconButton, Typography, AppBar, Toolbar, Badge, Container, Fade } from "@mui/material";
+import { Box, IconButton, Typography, AppBar, Toolbar, Badge, Container, Fade, Avatar, Paper } from "@mui/material";
 import MicIcon from "@mui/icons-material/Mic";
-import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import MenuIcon from "@mui/icons-material/Menu";
+import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
+import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+import GraphicEqIcon from '@mui/icons-material/GraphicEq';
 import MessageBubble from "./MessageBubble.jsx";
 import UserInput from "./UserInput.jsx";
-import ChannelSelector from "./ChannelSelector.jsx";
-import CartDrawer from "./CartDrawer.jsx";
 import ProductCard from "./ProductCard.jsx";
+import CartDrawer from "./CartDrawer.jsx";
 import { useSession } from "../context/SessionContext.jsx";
 import { VoiceAdapter } from "../channels/voice.adapter.js";
 import { WebAdapter } from "../channels/web.adapter.js";
@@ -15,12 +15,13 @@ import { WhatsAppAdapter } from "../channels/whatsapp.adapter.js";
 import { KioskAdapter } from "../channels/kiosk.adapter.js";
 
 export default function ChatWindow() {
-  const { sessionId, setSessionId, channel, setChannel } = useSession();
-  const [messages, setMessages] = useState([{ role: "agent", message: "Welcome to ABFRL! How can I assist you today?" }]);
+  const { sessionId, channel } = useSession();
+  const [messages, setMessages] = useState([{ role: "agent", message: "Welcome to ABFRL! I'm your personal shopping assistant. How can I distinguish your style today?" }]);
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [voiceAdapter, setVoiceAdapter] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
+  const [isListening, setIsListening] = useState(false);
 
   const adaptersRef = useRef({});
   const messagesEndRef = useRef(null);
@@ -31,22 +32,19 @@ export default function ChatWindow() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, isTyping]);
 
   useEffect(() => {
     const handleAgentReply = (response) => {
       setIsTyping(false);
 
-      // Handle text reply
       if (response.reply) {
         setMessages((prev) => [...prev, { role: "agent", message: response.reply }]);
         voiceAdapter?.speak(response.reply);
       }
 
-      // Handle cart updates
       if (response.cart) {
         setCart((prevCart) => {
-          // Check for new items to display in chat
           const newItems = response.cart.filter(item => !prevCart.some(p => p.sku === item.sku));
           if (newItems.length > 0) {
             newItems.forEach(item => {
@@ -64,100 +62,153 @@ export default function ChatWindow() {
       kiosk: new KioskAdapter(handleAgentReply),
     };
 
-    const vAdapter = new VoiceAdapter(handleVoiceInput, (text) => console.log("Agent says:", text));
+    const vAdapter = new VoiceAdapter(
+      (text) => { // onTranscription
+        setIsListening(false);
+        handleSend(text);
+      },
+      (text) => console.log("Agent speaking:", text) // onResponse
+    );
     setVoiceAdapter(vAdapter);
-  }, []);
-
-  const handleVoiceInput = async (text) => {
-    addUserMessage(text);
-    await sendToAdapter(text);
-  };
-
-  const addUserMessage = (text) => {
-    setMessages((prev) => [...prev, { role: "user", message: text }]);
-  };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const sendToAdapter = async (text) => {
     setIsTyping(true);
-    const currentAdapter = adaptersRef.current[channel];
-    if (currentAdapter) {
-      await currentAdapter.send(text, sessionId);
-    } else {
-      console.error("Adapter not found for channel:", channel);
-      setIsTyping(false);
-    }
+    const currentAdapter = adaptersRef.current[channel] || adaptersRef.current.web;
+    await currentAdapter.send(text, sessionId);
   };
 
   const handleSend = async (text) => {
-    addUserMessage(text);
+    if (!text) return;
+    setMessages((prev) => [...prev, { role: "user", message: text }]);
     await sendToAdapter(text);
   };
 
-  const handleCheckout = () => {
-    handleSend("I want to checkout");
-    setIsCartOpen(false);
+  const toggleListening = () => {
+    if (isListening) {
+      voiceAdapter?.stopListening();
+      setIsListening(false);
+    } else {
+      voiceAdapter?.startListening();
+      setIsListening(true);
+    }
   };
 
   return (
-    <Box sx={{ height: "100vh", display: "flex", flexDirection: "column", bgcolor: "#f1f5f9" }}>
-      {/* Header */}
-      <AppBar position="static" elevation={0} sx={{ bgcolor: "var(--primary-color)", color: "white" }}>
-        <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-            <MenuIcon />
+    <Box sx={{ height: "100vh", display: "flex", flexDirection: "column", bgcolor: "var(--primary-dark)" }}>
+      {/* Premium Header */}
+      <AppBar position="static"
+        sx={{
+          bgcolor: "rgba(0, 0, 0, 0.8)",
+          backdropFilter: "blur(12px)",
+          boxShadow: "none",
+          borderBottom: "1px solid var(--border-glass)"
+        }}>
+        <Toolbar sx={{ height: 70 }}>
+          <IconButton edge="start" sx={{ color: "var(--text-light)", mr: 2 }}>
+            <MenuRoundedIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 600 }}>
-            ABFRL Sales Assistant
-          </Typography>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <ChannelSelector current={channel} onChange={setChannel} />
-            <IconButton color="inherit" onClick={() => setIsCartOpen(true)}>
-              <Badge badgeContent={cart.length} color="secondary">
-                <ShoppingBagIcon />
-              </Badge>
-            </IconButton>
+
+          <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center", gap: 1.5 }}>
+            <Avatar sx={{ bgcolor: "var(--accent-gold)", width: 32, height: 32, fontSize: 16, fontWeight: "bold" }}>A</Avatar>
+            <Typography variant="h6" sx={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, letterSpacing: 0.5 }}>
+              ABFRL <span style={{ color: "var(--accent-gold)", fontWeight: 300 }}>Assistant</span>
+            </Typography>
           </Box>
+
+          <IconButton onClick={() => setIsCartOpen(true)} sx={{ color: "var(--text-light)" }}>
+            <Badge badgeContent={cart.length} sx={{ "& .MuiBadge-badge": { bgcolor: "var(--accent-gold)", color: "black" } }}>
+              <ShoppingBagOutlinedIcon />
+            </Badge>
+          </IconButton>
         </Toolbar>
       </AppBar>
 
-      {/* Chat Area */}
-      <Container maxWidth="md" sx={{ flexGrow: 1, overflow: "hidden", display: "flex", flexDirection: "column", py: 2 }}>
-        <Box sx={{ flexGrow: 1, overflowY: "auto", px: 2, display: "flex", flexDirection: "column" }}>
-          {messages.map((msg, idx) => {
-            if (msg.type === "product") {
-              return (
-                <Fade in={true} key={idx}>
-                  <Box display="flex" justifyContent="flex-start" mb={2}>
-                    <ProductCard product={msg.data} onAddToCart={() => { }} />
+      {/* Chat Canvas */}
+      <Container maxWidth="md" sx={{ flexGrow: 1, overflow: "hidden", display: "flex", flexDirection: "column", py: 3 }}>
+        <Box sx={{ flexGrow: 1, overflowY: "auto", px: 2, display: "flex", flexDirection: "column", gap: 2 }}>
+          {messages.map((msg, idx) => (
+            <React.Fragment key={idx}>
+              {msg.type === "product" ? (
+                <Fade in={true} timeout={500}>
+                  <Box display="flex" justifyContent="flex-start" sx={{ maxWidth: "85%" }}>
+                    <ProductCard product={msg.data} />
                   </Box>
                 </Fade>
-              );
-            }
-            return <MessageBubble key={idx} message={msg.message} role={msg.role} />;
-          })}
+              ) : (
+                <MessageBubble message={msg.message} role={msg.role} />
+              )}
+            </React.Fragment>
+          ))}
+
           {isTyping && (
-            <Typography variant="caption" sx={{ ml: 2, color: "text.secondary", fontStyle: "italic" }}>
-              Agent is typing...
-            </Typography>
+            <Fade in={true}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1, ml: 1, mt: 1 }}>
+                <Avatar sx={{ width: 24, height: 24, bgcolor: "var(--accent-gold)" }} src="/ai-avatar-placeholder.png" >A</Avatar>
+                <Typography variant="caption" sx={{ color: "var(--text-muted)" }}>Thinking...</Typography>
+              </Box>
+            </Fade>
           )}
           <div ref={messagesEndRef} />
         </Box>
 
-        {/* Input Area */}
-        <Box sx={{ pt: 2 }}>
-          <Box display="flex" gap={1} alignItems="center">
-            <UserInput onSend={handleSend} />
+        {/* Floating Input Area */}
+        <Box sx={{ pt: 3, position: "relative", px: 1, pb: 2 }}>
+          <Box sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            p: 1.5,
+            borderRadius: "50px",
+            bgcolor: "var(--primary-light)",
+            border: "1px solid var(--border-glass)",
+            boxShadow: "var(--shadow-card)"
+          }}>
+            {/* Big Visible Mic Button */}
             <IconButton
+              onClick={toggleListening}
               sx={{
-                bgcolor: "white",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                "&:hover": { bgcolor: "#f8fafc" }
+                bgcolor: isListening ? "var(--ey-yellow)" : "rgba(255, 230, 0, 0.1)",
+                color: isListening ? "black" : "var(--ey-yellow)",
+                border: "2px solid",
+                borderColor: isListening ? "transparent" : "var(--ey-yellow)",
+                width: 64,
+                height: 64,
+                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                animation: isListening ? "pulse-yellow 1.5s infinite" : "none",
+                "&:hover": {
+                  bgcolor: "var(--ey-yellow)",
+                  color: "black",
+                  transform: "scale(1.05)",
+                  boxShadow: "0 0 20px rgba(255, 230, 0, 0.4)"
+                }
               }}
-              onClick={() => voiceAdapter?.startListening()}
             >
-              <MicIcon color="action" />
+              {isListening ? <GraphicEqIcon sx={{ fontSize: 32 }} /> : <MicIcon sx={{ fontSize: 32 }} />}
             </IconButton>
+
+            <Box sx={{ flexGrow: 1 }}>
+              <UserInput onSend={handleSend} disabled={isListening} />
+            </Box>
           </Box>
+
+          {isListening && (
+            <Typography
+              variant="subtitle1"
+              sx={{
+                position: "absolute",
+                bottom: -10,
+                left: "50%",
+                transform: "translateX(-50%)",
+                color: "var(--ey-yellow)",
+                fontWeight: 700,
+                letterSpacing: 2,
+                textShadow: "0 2px 10px rgba(0,0,0,0.5)"
+              }}
+            >
+              LISTENING...
+            </Typography>
+          )}
         </Box>
       </Container>
 
@@ -165,7 +216,6 @@ export default function ChatWindow() {
         open={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         cart={cart}
-        onCheckout={handleCheckout}
       />
     </Box>
   );

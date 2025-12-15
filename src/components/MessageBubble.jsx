@@ -15,7 +15,7 @@ export default function MessageBubble({ message, role }) {
       className="fade-in"
     >
       {!isUser && (
-        <Avatar sx={{ bgcolor: "var(--secondary-color)", width: 32, height: 32 }}>
+        <Avatar sx={{ bgcolor: "var(--ey-yellow)", color: "black", width: 32, height: 32 }}>
           <SmartToyIcon fontSize="small" />
         </Avatar>
       )}
@@ -24,12 +24,12 @@ export default function MessageBubble({ message, role }) {
         elevation={0}
         sx={{
           p: 2,
-          backgroundColor: isUser ? "var(--chat-bg-user)" : "var(--chat-bg-agent)",
-          color: isUser ? "var(--chat-text-user)" : "var(--chat-text-agent)",
+          backgroundColor: isUser ? "var(--ey-yellow)" : "rgba(255, 255, 255, 0.08)",
+          color: isUser ? "black" : "var(--ey-white)",
           maxWidth: "70%",
           borderRadius: isUser ? "20px 20px 4px 20px" : "20px 20px 20px 4px",
-          boxShadow: isUser ? "none" : "0 2px 8px rgba(0,0,0,0.05)",
-          border: isUser ? "none" : "1px solid #e2e8f0"
+          border: isUser ? "none" : "1px solid var(--border-glass)",
+          fontWeight: 500
         }}
       >
         <Typography variant="body1" sx={{ whiteSpace: "pre-wrap" }}>
