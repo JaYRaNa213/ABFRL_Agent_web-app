@@ -126,7 +126,7 @@ export default function ChatWindow() {
 
           <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center", gap: 1.5 }}>
             <Avatar sx={{ bgcolor: "var(--accent-gold)", width: 32, height: 32, fontSize: 16, fontWeight: "bold" }}>A</Avatar>
-            <Typography variant="h6" sx={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, letterSpacing: 0.5 }}>
+            <Typography variant="h6" sx={{ fontFamily: "'Playfair Display', serif",color: "var(--accent-gold)", fontWeight: 600, letterSpacing: 0.5 }}>
               ABFRL <span style={{ color: "var(--accent-gold)", fontWeight: 300 }}>Assistant</span>
             </Typography>
           </Box>
