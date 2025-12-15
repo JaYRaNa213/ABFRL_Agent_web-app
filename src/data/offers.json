@@ -1,0 +1,16 @@
+[
+    {
+        "code": "ABFRL10",
+        "description": "Flat 10% off on all orders",
+        "discountType": "percentage",
+        "value": 10,
+        "minOrderValue": 1000
+    },
+    {
+        "code": "FIRST500",
+        "description": "Rs. 500 off on first order",
+        "discountType": "flat",
+        "value": 500,
+        "minOrderValue": 2500
+    }
+]

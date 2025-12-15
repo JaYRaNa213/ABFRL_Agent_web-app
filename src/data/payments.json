@@ -1,0 +1,26 @@
+[
+    {
+        "id": "pay1",
+        "type": "UPI",
+        "name": "Google Pay / PhonePe",
+        "icon": "upi-icon"
+    },
+    {
+        "id": "pay2",
+        "type": "Card",
+        "name": "Credit / Debit Card",
+        "icon": "card-icon"
+    },
+    {
+        "id": "pay3",
+        "type": "Lazypay",
+        "name": "Pay Later",
+        "icon": "lazypay-icon"
+    },
+    {
+        "id": "pay4",
+        "type": "COD",
+        "name": "Cash on Delivery",
+        "icon": "cash-icon"
+    }
+]

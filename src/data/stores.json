@@ -1,0 +1,24 @@
+[
+    {
+        "id": "s1",
+        "name": "ABFRL Flagship Store - Indiranagar",
+        "city": "Bangalore",
+        "address": "100 Feet Road, Indiranagar, Bangalore",
+        "phone": "080-12345678",
+        "coordinates": {
+            "lat": 12.9716,
+            "lng": 77.5946
+        }
+    },
+    {
+        "id": "s2",
+        "name": "Phoenix Marketcity - Whitefield",
+        "city": "Bangalore",
+        "address": "Mahadevapura, Whitefield Main Road, Bangalore",
+        "phone": "080-87654321",
+        "coordinates": {
+            "lat": 12.9956,
+            "lng": 77.6970
+        }
+    }
+]

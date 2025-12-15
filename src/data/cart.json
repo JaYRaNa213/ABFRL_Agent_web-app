@@ -1,0 +1,15 @@
+{
+    "userId": "c1",
+    "items": [
+        {
+            "productId": "p1",
+            "quantity": 1,
+            "size": "40",
+            "color": "Navy",
+            "price": 12999
+        }
+    ],
+    "subtotal": 12999,
+    "discount": 0,
+    "total": 12999
+}

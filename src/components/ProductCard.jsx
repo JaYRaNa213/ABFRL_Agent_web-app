@@ -1,45 +1,90 @@
 import React from "react";
-import { Box, Typography, Button, Card, CardMedia, CardContent, CardActions } from "@mui/material";
+import { Typography, Button, Card, CardMedia, CardContent, CardActions, Chip } from "@mui/material";
 
-export default function ProductCard({ product, onAddToCart }) {
+export default function ProductCard({ product, onAddToCart, onAskAI, compact = false }) {
+  // Handle price display defensively
+  const price = typeof product.price === 'number' ? product.price.toLocaleString('en-IN') : product.price;
+
   return (
-    <Card sx={{ maxWidth: { xs: "100%", sm: 280 }, width: { xs: "100%", sm: "auto" }, m: 1, borderRadius: 3, boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
+    <Card
+      sx={{
+        width: compact ? 200 : { xs: "100%", sm: 280 },
+        maxWidth: "100%",
+        m: 1,
+        bgcolor: "#1e1e1e",
+        color: "white",
+        borderRadius: 3,
+        border: "1px solid rgba(255,255,255,0.05)",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+        transition: "transform 0.2s, box-shadow 0.2s",
+        "&:hover": {
+          transform: "translateY(-4px)",
+          boxShadow: "0 10px 20px rgba(0,0,0,0.5)"
+        }
+      }}
+    >
       <CardMedia
         component="img"
-        height="200"
-        image={product.image || "https://via.placeholder.com/200"} // Fallback image
+        height={compact ? "140" : "280"}
+        image={product.image || "https://via.placeholder.com/200"}
         alt={product.name}
-        sx={{ objectFit: "cover", height: { xs: 150, sm: 200 } }}
+        sx={{ objectFit: "cover" }}
       />
-      <CardContent sx={{ pb: 1 }}>
-        <Typography gutterBottom variant="h6" component="div" sx={{ fontSize: "1rem", fontWeight: 600 }}>
-          {product.name}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {product.category}
-        </Typography>
-        <Typography variant="h6" color="primary" sx={{ mt: 1, fontWeight: 700 }}>
-          ₹{product.price}
-        </Typography>
-      </CardContent>
-      <CardActions sx={{ p: 2, pt: 0 }}>
-        <Button
-          size="small"
-          variant="contained"
-          fullWidth
-          onClick={() => onAddToCart(product)}
+      <CardContent sx={{ pb: 1, p: compact ? 1.5 : 2 }}>
+        {product.subCategory && !compact && (
+          <Typography variant="overline" color="gray" sx={{ lineHeight: 1 }}>{product.category} • {product.subCategory}</Typography>
+        )}
+        <Typography
+          gutterBottom
+          variant={compact ? "subtitle2" : "h6"}
+          component="div"
           sx={{
-            bgcolor: "var(--ey-yellow)",
-            color: "black",
-            "&:hover": { bgcolor: "var(--accent-gold-hover)" },
-            textTransform: "none",
-            borderRadius: 2,
-            fontWeight: "bold"
+            fontWeight: 600,
+            fontFamily: "'Outfit', sans-serif",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis"
           }}
         >
-          Add to Cart
-        </Button>
-      </CardActions>
+          {product.name}
+        </Typography>
+
+        <Typography variant={compact ? "subtitle2" : "h6"} sx={{ color: "#FFE600", fontWeight: 700 }}>
+          ₹{price}
+        </Typography>
+      </CardContent>
+
+      {!compact && (
+        <CardActions sx={{ p: 2, pt: 0 }}>
+          <Button
+            size="small"
+            variant="outlined"
+            fullWidth
+            onClick={() => onAddToCart && onAddToCart(product)}
+            sx={{
+              borderColor: "#FFE600",
+              color: "#FFE600",
+              "&:hover": { bgcolor: "rgba(255, 230, 0, 0.1)", borderColor: "#FFE600" },
+              textTransform: "none",
+              borderRadius: 2,
+              fontWeight: "bold"
+            }}
+          >
+            Add to Cart
+          </Button>
+          {onAskAI && (
+            <Button
+              size="small"
+              variant="text"
+              fullWidth
+              onClick={(e) => { e.stopPropagation(); onAskAI(product); }}
+              sx={{ mt: 1, color: "gray", fontSize: "0.75rem", textTransform: "none" }}
+            >
+              Ask AI about this
+            </Button>
+          )}
+        </CardActions>
+      )}
     </Card>
   );
 }

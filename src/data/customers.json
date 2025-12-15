@@ -1,0 +1,49 @@
+[
+    {
+        "id": "c1",
+        "name": "Rahul Sharma",
+        "email": "rahul.sharma@example.com",
+        "phone": "+91-9876543210",
+        "loyaltyTier": "Platinum",
+        "loyaltyPoints": 2500,
+        "city": "Bangalore",
+        "preferences": {
+            "style": "Formal",
+            "brands": [
+                "Louis Philippe",
+                "Van Heusen"
+            ],
+            "sizes": {
+                "shirt": "40",
+                "trouser": "32"
+            }
+        },
+        "pastPurchases": [
+            "p1",
+            "p2"
+        ]
+    },
+    {
+        "id": "c2",
+        "name": "Priya Verma",
+        "email": "priya.verma@example.com",
+        "phone": "+91-9898989898",
+        "loyaltyTier": "Gold",
+        "loyaltyPoints": 1200,
+        "city": "Mumbai",
+        "preferences": {
+            "style": "Ethnic",
+            "brands": [
+                "W",
+                "Pantaloons"
+            ],
+            "sizes": {
+                "top": "M",
+                "bottom": "L"
+            }
+        },
+        "pastPurchases": [
+            "p5"
+        ]
+    }
+]

@@ -1,0 +1,420 @@
+[
+  {
+    "sku": "SHIRT001",
+    "name": "Formal Slim Fit Shirt",
+    "brand": "Louis Philippe",
+    "category": "Men",
+    "subCategory": "Formal Wear",
+    "price": 2499,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "White",
+      "Blue"
+    ],
+    "fabric": "Cotton",
+    "tags": [
+      "office",
+      "bestseller"
+    ],
+    "image": "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "TOP002hd",
+    "name": "Slim Fit Formal Shirt",
+    "brand": "Louis Philippe",
+    "category": "Men",
+    "subCategory": "Formal Wear",
+    "price": 2599,
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "White"
+    ],
+    "tags": [
+      "office",
+      "formal"
+    ],
+    "image": "https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "TOP003hd",
+    "name": "Cotton Office Shirt",
+    "brand": "Allen Solly",
+    "category": "Men",
+    "subCategory": "Formal Wear",
+    "price": 1999,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Light Blue"
+    ],
+    "tags": [
+      "office"
+    ],
+    "image": "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "TOP004hd",
+    "name": "Party Wear Blazer",
+    "brand": "Van Heusen",
+    "category": "Men",
+    "subCategory": "Party Wear",
+    "price": 5999,
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Navy Blue"
+    ],
+    "tags": [
+      "party",
+      "evening"
+    ],
+    "image": "https://images.unsplash.com/photo-1617127365659-c47fa864fbe5?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "TOP005hd",
+    "name": "Printed Kurta",
+    "brand": "Manyavar",
+    "category": "Men",
+    "subCategory": "Ethnic Wear",
+    "price": 3499,
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Maroon"
+    ],
+    "tags": [
+      "ethnic",
+      "festival"
+    ],
+    "image": "https://images.unsplash.com/photo-1620799139507-2a76f79a2f4d?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "TOP006hd",
+    "name": "Women Ethnic Kurti",
+    "brand": "Biba",
+    "category": "Women",
+    "subCategory": "Ethnic Wear",
+    "price": 1899,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Yellow"
+    ],
+    "tags": [
+      "ethnic",
+      "daily wear"
+    ],
+    "image": "https://images.unsplash.com/photo-1583391733956-6c78276477e2?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "TOP007hd",
+    "name": "Women Western Top",
+    "brand": "AND",
+    "category": "Women",
+    "subCategory": "Western Wear",
+    "price": 1799,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Pink"
+    ],
+    "tags": [
+      "casual"
+    ],
+    "image": "https://images.unsplash.com/photo-1520975922284-9e0ce82759c8?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "TOP008hd",
+    "name": "Formal Pencil Skirt",
+    "brand": "Van Heusen",
+    "category": "Women",
+    "subCategory": "Formal Wear",
+    "price": 2499,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "tags": [
+      "office"
+    ],
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "TOP009hd",
+    "name": "Party Wear Dress",
+    "brand": "Forever New",
+    "category": "Women",
+    "subCategory": "Party Wear",
+    "price": 4999,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Red"
+    ],
+    "tags": [
+      "party",
+      "evening"
+    ],
+    "image": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "TOP010hd",
+    "name": "Casual Polo T-Shirt",
+    "brand": "US Polo Assn",
+    "category": "Men",
+    "subCategory": "Casual Wear",
+    "price": 1599,
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Green"
+    ],
+    "tags": [
+      "casual"
+    ],
+    "image": "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "TOP011hd",
+    "name": "Women Casual Shirt",
+    "brand": "Global Desi",
+    "category": "Women",
+    "subCategory": "Western Wear",
+    "price": 2099,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "White"
+    ],
+    "tags": [
+      "casual",
+      "daily wear"
+    ],
+    "image": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "DRESS001",
+    "name": "Floral Party Dress",
+    "brand": "AND",
+    "category": "Women",
+    "subCategory": "Party Wear",
+    "price": 4999,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Red"
+    ],
+    "fabric": "Chiffon",
+    "tags": [
+      "party"
+    ],
+    "image": "https://images.unsplash.com/photo-1612336307429-8a898d10e223?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "SHIRT002",
+    "name": "Premium Cotton Shirt",
+    "brand": "Van Heusen",
+    "category": "Men",
+    "subCategory": "Formal Wear",
+    "price": 2799,
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Pink",
+      "Grey"
+    ],
+    "fabric": "Cotton",
+    "tags": [
+      "office"
+    ],
+    "image": "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "TROUSER001",
+    "name": "Formal Trousers",
+    "brand": "Allen Solly",
+    "category": "Men",
+    "subCategory": "Formal Wear",
+    "price": 2999,
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "fabric": "Poly-Viscose",
+    "tags": [
+      "office"
+    ],
+    "image": "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "BLAZER001",
+    "name": "Premium Party Blazer",
+    "brand": "Louis Philippe",
+    "category": "Men",
+    "subCategory": "Party Wear",
+    "price": 7999,
+    "sizes": [
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Navy"
+    ],
+    "fabric": "Wool Blend",
+    "tags": [
+      "party",
+      "upsell"
+    ],
+    "image": "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "DRESS001",
+    "name": "Floral Party Dress",
+    "brand": "AND",
+    "category": "Women",
+    "subCategory": "Party Wear",
+    "price": 4999,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Red"
+    ],
+    "fabric": "Chiffon",
+    "tags": [
+      "party"
+    ],
+    "image": "https://images.unsplash.com/photo-1612336307429-8a898d10e223?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "TOP001f",
+    "name": "Office Wear Top",
+    "brand": "Van Heusen",
+    "category": "Women",
+    "subCategory": "Formal Wear",
+    "price": 2299,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "tags": [
+      "office"
+    ],
+    "image": "https://images.unsplash.com/photo-1612336307429-8a898d10e223?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "DRESS00kl",
+    "name": "Floral Party Dress",
+    "brand": "AND",
+    "category": "Women",
+    "subCategory": "Party Wear",
+    "price": 4999,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Red"
+    ],
+    "fabric": "Chiffon",
+    "tags": [
+      "party"
+    ],
+    "image": "https://images.unsplash.com/photo-1612336307429-8a898d10e223?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "KURTA001l",
+    "name": "Printed Kurta Set",
+    "brand": "Biba",
+    "category": "Women",
+    "subCategory": "Ethnic Wear",
+    "price": 3599,
+    "sizes": [
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Yellow"
+    ],
+    "fabric": "Rayon",
+    "tags": [
+      "ethnic"
+    ],
+    "image": "https://images.unsplash.com/photo-1612336307429-8a898d10e223?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "sku": "TOP001hd",
+    "name": "Office Wear Top",
+    "brand": "Van Heusen",
+    "category": "Men",
+    "subCategory": "Formal Wear",
+    "price": 2299,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "tags": [
+      "office"
+    ],
+    "image": "https://images.unsplash.com/photo-1612336307429-8a898d10e223?auto=format&fit=crop&q=80&w=800"
+  }
+]
