@@ -51,12 +51,37 @@ export default function ChatWindow() {
         speak(response.reply, languageRef.current);
       }
 
+      // Handle "SHOW_PRODUCTS" action strict protocol
+      if (response.action === "SHOW_PRODUCTS" && response.products && response.products.length > 0) {
+        const productMessages = response.products.map(product => ({
+          role: "system",
+          type: "product",
+          data: product
+        }));
+
+        // Add product cards immediately
+        setMessages(prev => [...prev, ...productMessages]);
+
+        // If there's no text reply (which is expected for SHOW_PRODUCTS), we are done.
+        // The check below for response.reply handles the case where text MIGHT be sent (fallback).
+      }
+      // Legacy or Hybrid support: if products are sent without strict action (or different action)
+      else if (response.products && response.products.length > 0) {
+        const productMessages = response.products.map(product => ({
+          role: "system",
+          type: "product",
+          data: product
+        }));
+        setMessages(prev => [...prev, ...productMessages]);
+      }
+
       if (response.cart) {
         setCart((prevCart) => {
           const newItems = response.cart.filter(item => !prevCart.some(p => p.sku === item.sku));
           if (newItems.length > 0) {
             newItems.forEach(item => {
-              setMessages(prev => [...prev, { role: "system", type: "product", data: item }]);
+              // Optional: notify about cart addition if needed, or just let the drawer update
+              // For now, we rely on the drawer badge
             });
           }
           return response.cart;

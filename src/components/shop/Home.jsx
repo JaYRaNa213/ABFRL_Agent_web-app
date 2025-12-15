@@ -61,7 +61,7 @@ export default function Home() {
             {/* Categories */}
             <Container maxWidth="lg" sx={{ mb: 6 }}>
                 <Grid container spacing={4}>
-                    <Grid item xs={12} md={6}>
+                    <Grid item size={{ xs: 12, md: 6 }}>
                         <Paper
                             sx={{
                                 p: 4,
@@ -80,7 +80,7 @@ export default function Home() {
                             <Typography variant="h4" sx={{ color: 'white', fontFamily: "'Playfair Display', serif" }}>MEN</Typography>
                         </Paper>
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                    <Grid item size={{ xs: 12, md: 6 }}>
                         <Paper
                             sx={{
                                 p: 4,
@@ -129,7 +129,7 @@ export default function Home() {
                 <Typography variant="h4" sx={{ mb: 3, fontFamily: "'Playfair Display', serif", color: 'white' }}>Trending Now</Typography>
                 <Grid container spacing={2}>
                     {featuredProducts.map((p) => (
-                        <Grid item xs={12} sm={6} md={3} key={p.id}>
+                        <Grid item size={{ xs: 12, sm: 6, md: 3 }} key={p.sku}>
                             <ProductCard product={p} onAddToCart={() => {/* TODO */ }} />
                         </Grid>
                     ))}

@@ -30,7 +30,23 @@ export default function Header() {
 
                 {/* Desktop Nav */}
                 <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 4 }}>
-                    {['MEN', 'WOMEN', 'KIDS', 'SALE'].map((item) => (
+                    {['HOME'].map((item) => (
+                        <Button
+                            key={item}
+                            onClick={() => navigate('/')} // Mock nav for now
+                            sx={{
+                                color: 'white',
+                                fontWeight: 500,
+                                letterSpacing: 1,
+                                '&:hover': { color: '#FFE600' }
+                            }}
+                        >
+                            {item}
+                        </Button>
+                    ))}
+                </Box>
+                <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 10 }}>
+                    {['PRODUCTS', 'ABOUT US'].map((item) => (
                         <Button
                             key={item}
                             onClick={() => navigate('/products')} // Mock nav for now
