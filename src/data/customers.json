@@ -1,49 +1,170 @@
 [
     {
-        "id": "c1",
-        "name": "Rahul Sharma",
-        "email": "rahul.sharma@example.com",
-        "phone": "+91-9876543210",
-        "loyaltyTier": "Platinum",
-        "loyaltyPoints": 2500,
-        "city": "Bangalore",
-        "preferences": {
-            "style": "Formal",
-            "brands": [
-                "Louis Philippe",
-                "Van Heusen"
-            ],
-            "sizes": {
-                "shirt": "40",
-                "trouser": "32"
-            }
-        },
+        "customerId": "CUST001",
+        "name": "Rohit Sharma",
+        "age": 32,
+        "gender": "Male",
+        "city": "Bengaluru",
+        "loyaltyTier": "GOLD",
+        "preferredChannel": "mobile",
+        "preferredStore": "Orion Mall",
+        "stylePreferences": [
+            "formal",
+            "smart-casual"
+        ],
         "pastPurchases": [
-            "p1",
-            "p2"
+            "SHIRT001",
+            "TROUSER002"
         ]
     },
     {
-        "id": "c2",
-        "name": "Priya Verma",
-        "email": "priya.verma@example.com",
-        "phone": "+91-9898989898",
-        "loyaltyTier": "Gold",
-        "loyaltyPoints": 1200,
+        "customerId": "CUST002",
+        "name": "Ananya Verma",
+        "age": 28,
+        "gender": "Female",
         "city": "Mumbai",
-        "preferences": {
-            "style": "Ethnic",
-            "brands": [
-                "W",
-                "Pantaloons"
-            ],
-            "sizes": {
-                "top": "M",
-                "bottom": "L"
-            }
-        },
+        "loyaltyTier": "PLATINUM",
+        "preferredChannel": "web",
+        "preferredStore": "Phoenix Mall",
+        "stylePreferences": [
+            "ethnic",
+            "party-wear"
+        ],
         "pastPurchases": [
-            "p5"
+            "DRESS001",
+            "KURTA002"
+        ]
+    },
+    {
+        "customerId": "CUST003",
+        "name": "Amit Singh",
+        "age": 40,
+        "gender": "Male",
+        "city": "Delhi",
+        "loyaltyTier": "SILVER",
+        "preferredChannel": "kiosk",
+        "preferredStore": "Delhi Mall",
+        "stylePreferences": [
+            "casual"
+        ],
+        "pastPurchases": []
+    },
+    {
+        "customerId": "CUST004",
+        "name": "Neha Kapoor",
+        "age": 35,
+        "gender": "Female",
+        "city": "Pune",
+        "loyaltyTier": "GOLD",
+        "preferredChannel": "mobile",
+        "preferredStore": "Orion Mall",
+        "stylePreferences": [
+            "formal",
+            "western"
+        ],
+        "pastPurchases": [
+            "TOP001"
+        ]
+    },
+    {
+        "customerId": "CUST005",
+        "name": "Suresh Iyer",
+        "age": 45,
+        "gender": "Male",
+        "city": "Chennai",
+        "loyaltyTier": "PLATINUM",
+        "preferredChannel": "web",
+        "preferredStore": "Rama Mall",
+        "stylePreferences": [
+            "formal"
+        ],
+        "pastPurchases": [
+            "BLAZER002"
+        ]
+    },
+    {
+        "customerId": "CUST006",
+        "name": "Priya Reddy",
+        "age": 24,
+        "gender": "Female",
+        "city": "Hyderabad",
+        "loyaltyTier": "BRONZE",
+        "preferredChannel": "app",
+        "preferredStore": "AAM Mall",
+        "stylePreferences": [
+            "casual",
+            "trendy"
+        ],
+        "pastPurchases": [
+            "SKIRT001"
+        ]
+    },
+    {
+        "customerId": "CUST007",
+        "name": "Rahul Malhotra",
+        "age": 29,
+        "gender": "Male",
+        "city": "Chandigarh",
+        "loyaltyTier": "GOLD",
+        "preferredChannel": "web",
+        "preferredStore": "Chandigarh Plaza",
+        "stylePreferences": [
+            "streetwear"
+        ],
+        "pastPurchases": [
+            "JACKET001",
+            "JEANS001"
+        ]
+    },
+    {
+        "customerId": "CUST008",
+        "name": "Sneha Gupta",
+        "age": 31,
+        "gender": "Female",
+        "city": "Kolkata",
+        "loyaltyTier": "SILVER",
+        "preferredChannel": "web",
+        "preferredStore": "kali Mall",
+
+        "stylePreferences": [
+            "ethnic"
+        ],
+        "pastPurchases": [
+            "KURTA001"
+        ]
+    },
+    {
+        "customerId": "CUST009",
+        "name": "Vikram Rathore",
+        "age": 38,
+        "gender": "Male",
+        "city": "Jaipur",
+        "loyaltyTier": "PLATINUM",
+        "preferredChannel": "store",
+        "preferredStore": "judio Mall",
+        "stylePreferences": [
+            "traditional",
+            "formal"
+        ],
+        "pastPurchases": [
+            "SHIRT002"
+        ]
+    },
+    {
+        "customerId": "CUST010",
+        "name": "Meera Nair",
+        "age": 26,
+        "gender": "Female",
+        "city": "Kochi",
+        "loyaltyTier": "GOLD",
+        "preferredChannel": "web",
+        "preferredStore": "judio Mall",
+        "stylePreferences": [
+            "casual",
+            "western"
+        ],
+        "pastPurchases": [
+            "DRESS002"
         ]
     }
 ]
