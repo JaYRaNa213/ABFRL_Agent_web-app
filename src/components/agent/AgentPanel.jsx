@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Box, IconButton, Typography, Avatar, Fade, Paper } from "@mui/material";
+import { Box, IconButton, Typography, Avatar, Fade, Paper, Button } from "@mui/material";
 import MicIcon from "@mui/icons-material/Mic";
 import GraphicEqIcon from '@mui/icons-material/GraphicEq';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import MessageBubble from "../MessageBubble.jsx";
 import UserInput from "../UserInput.jsx";
 import ProductCard from "../ProductCard.jsx";
 import { useSession } from "../../context/SessionContext.jsx";
-import { useCart } from "../../context/CartContext.jsx"; // Import CartContext
+import { useCart } from "../../context/CartContext.jsx";
 import { WebAdapter } from "../../channels/web.adapter.js";
 import { WhatsAppAdapter } from "../../channels/whatsapp.adapter.js";
 import { KioskAdapter } from "../../channels/kiosk.adapter.js";
@@ -15,12 +16,13 @@ import { useVoiceRecognition } from "../../hooks/useVoiceRecognition.js";
 import { speak } from "../../utils/speak.js";
 
 export default function AgentPanel() {
-    const { sessionId, channel } = useSession();
+    const { sessionId, channel, lastAgentResponse, setLastAgentResponse, clearSession } = useSession();
     const { setCart } = useCart();
     const [messages, setMessages] = useState([{ role: "agent", message: "Hi! I'm your ABFRL Assistant. Looking for something specific?" }]);
     const [isTyping, setIsTyping] = useState(false);
     const [isListening, setIsListening] = useState(false);
     const [language, setLanguage] = useState("en-IN");
+    const [displayedProducts, setDisplayedProducts] = useState([]);
 
     const languageRef = useRef(language);
     const adaptersRef = useRef({});
@@ -36,32 +38,34 @@ export default function AgentPanel() {
 
     useEffect(() => {
         scrollToBottom();
-    }, [messages, isTyping]);
+    }, [messages, isTyping, displayedProducts]);
 
     useEffect(() => {
         const handleAgentReply = (response) => {
+            console.log("🔍 AgentPanel received response:", response);
             setIsTyping(false);
+
+            // Store response in SessionContext for event-driven updates
+            setLastAgentResponse(response);
 
             if (response.reply) {
                 setMessages((prev) => [...prev, { role: "agent", message: response.reply }]);
                 speak(response.reply, languageRef.current);
             }
 
+            // Handle SHOW_PRODUCTS action
+            if (response.action === "SHOW_PRODUCTS" && response.target === "AgentPanel" && response.products?.length > 0) {
+                console.log("✅ SHOW_PRODUCTS detected in AgentPanel, products:", response.products.length);
+                setDisplayedProducts(response.products);
+            } else {
+                // Clear products if not showing
+                setDisplayedProducts([]);
+            }
+
             if (response.cart) {
                 setCart((prevCart) => {
-                    // Logic to merge cart items or overwrite. 
-                    // For simplicity in this demo, we'll append new ones or just set it if backend sends full cart
-                    // The prompt says "Agent returns... Optional product suggestions". 
-                    // If the agent updates cart, we assume it sends the updated cart or items to add.
-                    // Let's assume it sends items to add for now or full cart state.
-                    // Existing logic from ChatWindow:
                     const newItems = response.cart.filter(item => !prevCart.some(p => p.sku === item.sku));
-                    if (newItems.length > 0) {
-                        newItems.forEach(item => {
-                            setMessages(prev => [...prev, { role: "system", type: "product", data: item }]);
-                        });
-                    }
-                    return response.cart; // This replaces the cart.
+                    return response.cart;
                 });
             }
         };
@@ -107,6 +111,26 @@ export default function AgentPanel() {
         await sendToAdapter(text, channelOverride);
     };
 
+    const handleClearChat = () => {
+        if (window.confirm("Are you sure you want to clear the chat?")) {
+            // Clear local state
+            setMessages([{ role: "agent", message: "Hi! I'm your ABFRL Assistant. Looking for something specific?" }]);
+            setDisplayedProducts([]);
+            setIsTyping(false);
+            setIsListening(false);
+
+            // Clear session context
+            clearSession();
+
+            // Stop any ongoing speech
+            if (recognition) {
+                recognition.stop();
+            }
+
+            console.log("✅ Chat cleared successfully");
+        }
+    };
+
     const toggleListening = () => {
         if (isListening) {
             recognition?.stop();
@@ -135,6 +159,17 @@ export default function AgentPanel() {
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <Box sx={{ width: 8, height: 8, borderRadius: "50%", bgcolor: "#4CAF50" }} /> {/* Online indicator */}
                     <LanguageSelector language={language} setLanguage={setLanguage} />
+                    <IconButton
+                        onClick={handleClearChat}
+                        size="small"
+                        sx={{
+                            color: "var(--accent-gold)",
+                            '&:hover': { bgcolor: "rgba(255, 230, 0, 0.1)" }
+                        }}
+                        title="Refresh Chat"
+                    >
+                        <RefreshIcon fontSize="small" />
+                    </IconButton>
                 </Box>
             </Box>
 
@@ -151,6 +186,21 @@ export default function AgentPanel() {
                         )}
                     </React.Fragment>
                 ))}
+
+                {/* Product Cards Section - Event-driven display */}
+                {displayedProducts.length > 0 && (
+                    <Box sx={{ mt: 2 }}>
+                        <Typography variant="caption" sx={{ color: "var(--accent-gold)", mb: 1, display: "block" }}>
+                            Recommended Products
+                        </Typography>
+                        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                            {displayedProducts.map((product) => (
+                                <ProductCard key={product.sku} product={product} compact={true} />
+                            ))}
+                        </Box>
+                    </Box>
+                )}
+
                 {isTyping && (
                     <Typography variant="caption" sx={{ color: "var(--text-muted)", ml: 1 }}>Agent is typing...</Typography>
                 )}

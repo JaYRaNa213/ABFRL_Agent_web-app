@@ -44,6 +44,7 @@ export default function ChatWindow() {
 
   useEffect(() => {
     const handleAgentReply = (response) => {
+      console.log("🔍 FRONTEND: Received response:", response);
       setIsTyping(false);
 
       if (response.reply) {
@@ -53,6 +54,7 @@ export default function ChatWindow() {
 
       // Handle "SHOW_PRODUCTS" action strict protocol
       if (response.action === "SHOW_PRODUCTS" && response.products && response.products.length > 0) {
+        console.log("✅ SHOW_PRODUCTS action detected, products:", response.products.length);
         const productMessages = response.products.map(product => ({
           role: "system",
           type: "product",
@@ -61,18 +63,22 @@ export default function ChatWindow() {
 
         // Add product cards immediately
         setMessages(prev => [...prev, ...productMessages]);
+        console.log("📦 Added product messages to state");
 
         // If there's no text reply (which is expected for SHOW_PRODUCTS), we are done.
         // The check below for response.reply handles the case where text MIGHT be sent (fallback).
       }
       // Legacy or Hybrid support: if products are sent without strict action (or different action)
       else if (response.products && response.products.length > 0) {
+        console.log("⚠️ Products without SHOW_PRODUCTS action, products:", response.products.length);
         const productMessages = response.products.map(product => ({
           role: "system",
           type: "product",
           data: product
         }));
         setMessages(prev => [...prev, ...productMessages]);
+      } else {
+        console.log("❌ No products in response");
       }
 
       if (response.cart) {

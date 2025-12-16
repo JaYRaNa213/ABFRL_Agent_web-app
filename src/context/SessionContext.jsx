@@ -15,12 +15,29 @@ export function SessionProvider({ children }) {
   /* Messaging trigger for Shop -> Agent communication */
   const [pendingMessage, setPendingMessage] = useState(null);
 
+  /* Store last agent response for AgentPanel to react to */
+  const [lastAgentResponse, setLastAgentResponse] = useState(null);
+
   const triggerAgentMessage = (msg) => {
     setPendingMessage(msg);
   };
 
+  const clearSession = () => {
+    setLastAgentResponse(null);
+  };
+
   return (
-    <SessionContext.Provider value={{ sessionId, setSessionId, channel, setChannel, pendingMessage, triggerAgentMessage }}>
+    <SessionContext.Provider value={{
+      sessionId,
+      setSessionId,
+      channel,
+      setChannel,
+      pendingMessage,
+      triggerAgentMessage,
+      lastAgentResponse,
+      setLastAgentResponse,
+      clearSession
+    }}>
       {children}
     </SessionContext.Provider>
   );
