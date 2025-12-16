@@ -1,28 +1,39 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Box, IconButton, Typography, Avatar, Fade, Paper, Button } from "@mui/material";
+import { Box, IconButton, Typography, Avatar } from "@mui/material";
 import MicIcon from "@mui/icons-material/Mic";
-import GraphicEqIcon from '@mui/icons-material/GraphicEq';
-import RefreshIcon from '@mui/icons-material/Refresh';
+import GraphicEqIcon from "@mui/icons-material/GraphicEq";
+import RefreshIcon from "@mui/icons-material/Refresh";
+
 import MessageBubble from "../MessageBubble.jsx";
 import UserInput from "../UserInput.jsx";
 import ProductCard from "../ProductCard.jsx";
+
 import { useSession } from "../../context/SessionContext.jsx";
 import { useCart } from "../../context/CartContext.jsx";
+
 import { WebAdapter } from "../../channels/web.adapter.js";
 import { WhatsAppAdapter } from "../../channels/whatsapp.adapter.js";
 import { KioskAdapter } from "../../channels/kiosk.adapter.js";
+
 import LanguageSelector from "../LanguageSelector.jsx";
 import { useVoiceRecognition } from "../../hooks/useVoiceRecognition.js";
 import { speak } from "../../utils/speak.js";
 
 export default function AgentPanel() {
-    const { sessionId, channel, lastAgentResponse, setLastAgentResponse, clearSession } = useSession();
+    const { sessionId, channel, setLastAgentResponse, clearSession } = useSession();
     const { setCart } = useCart();
-    const [messages, setMessages] = useState([{ role: "agent", message: "Hi! I'm your ABFRL Assistant. Looking for something specific?" }]);
+
+    const [messages, setMessages] = useState([
+        { role: "agent", message: "Hi! I'm your ABFRL Assistant. Looking for something specific?" }
+    ]);
+
+    const [displayedProducts, setDisplayedProducts] = useState([]);
     const [isTyping, setIsTyping] = useState(false);
     const [isListening, setIsListening] = useState(false);
     const [language, setLanguage] = useState("en-IN");
-    const [displayedProducts, setDisplayedProducts] = useState([]);
+
+    // MODE: text | voice
+    const [inputMode, setInputMode] = useState("text");
 
     const languageRef = useRef(language);
     const adaptersRef = useRef({});
@@ -32,191 +43,183 @@ export default function AgentPanel() {
         languageRef.current = language;
     }, [language]);
 
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    };
-
     useEffect(() => {
-        scrollToBottom();
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages, isTyping, displayedProducts]);
 
+    /* =========================
+       AGENT RESPONSE HANDLER
+    ========================= */
+    const handleAgentReply = (response) => {
+        setIsTyping(false);
+        setLastAgentResponse(response);
+
+        // TEXT RESPONSE (both modes)
+        if (response.reply) {
+            setMessages((prev) => [...prev, { role: "agent", message: response.reply }]);
+        }
+
+        // 🔊 SPEAK ONLY IN VOICE MODE
+        if (inputMode === "voice" && response.reply) {
+            speak(response.reply, languageRef.current);
+        }
+
+        // 🛍️ SHOW PRODUCTS IN BOTH MODES
+        if (
+            response.action === "SHOW_PRODUCTS" &&
+            response.target === "AgentPanel" &&
+            response.products?.length
+        ) {
+            setDisplayedProducts(response.products);
+        } else {
+            setDisplayedProducts([]);
+        }
+
+        if (response.cart) {
+            setCart(response.cart);
+        }
+    };
+
+    /* =========================
+       ADAPTER SETUP
+    ========================= */
     useEffect(() => {
-        const handleAgentReply = (response) => {
-            console.log("🔍 AgentPanel received response:", response);
-            setIsTyping(false);
-
-            // Store response in SessionContext for event-driven updates
-            setLastAgentResponse(response);
-
-            if (response.reply) {
-                setMessages((prev) => [...prev, { role: "agent", message: response.reply }]);
-                speak(response.reply, languageRef.current);
-            }
-
-            // Handle SHOW_PRODUCTS action
-            if (response.action === "SHOW_PRODUCTS" && response.target === "AgentPanel" && response.products?.length > 0) {
-                console.log("✅ SHOW_PRODUCTS detected in AgentPanel, products:", response.products.length);
-                setDisplayedProducts(response.products);
-            } else {
-                // Clear products if not showing
-                setDisplayedProducts([]);
-            }
-
-            if (response.cart) {
-                setCart((prevCart) => {
-                    const newItems = response.cart.filter(item => !prevCart.some(p => p.sku === item.sku));
-                    return response.cart;
-                });
-            }
-        };
-
         adaptersRef.current = {
             web: new WebAdapter(handleAgentReply),
             whatsapp: new WhatsAppAdapter(handleAgentReply),
             kiosk: new KioskAdapter(handleAgentReply),
         };
+    }, []);
 
-        const fetchHistory = async () => {
-            // Mock history fetch or real one
-            const history = await adaptersRef.current.web.getHistory(sessionId);
-            if (history?.conversationHistory?.length > 0) {
-                setMessages(history.conversationHistory.map((h) => ({ role: h.role, message: h.message })));
-            }
-            if (history?.cart) setCart(history.cart);
-        };
-        fetchHistory();
-        fetchHistory();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-    // Listen for triggers from the Shop (e.g., "Ask AI" buttons)
-    const { pendingMessage, triggerAgentMessage } = useSession();
-    useEffect(() => {
-        if (pendingMessage) {
-            handleSend(pendingMessage);
-            triggerAgentMessage(null); // Clear it
-        }
-    }, [pendingMessage]);
-
-    const recognition = useVoiceRecognition(language, (text) => handleSend(text, "voice"));
-
-    const sendToAdapter = async (text, channelOverride) => {
+    /* =========================
+       SEND TO ADAPTER
+    ========================= */
+    const sendToAdapter = async (text, mode) => {
         setIsTyping(true);
-        const currentAdapter = adaptersRef.current[channel] || adaptersRef.current.web;
-        await currentAdapter.send(text, sessionId, { language, channel: channelOverride || channel });
+        const adapter = adaptersRef.current[channel] || adaptersRef.current.web;
+
+        await adapter.send(text, sessionId, {
+            language,
+            inputMode: mode,
+            channel,
+        });
     };
 
-    const handleSend = async (text, channelOverride) => {
-        if (!text) return;
-        setMessages((prev) => [...prev, { role: "user", message: text }]);
-        await sendToAdapter(text, channelOverride);
-    };
+    /* =========================
+       TEXT SEND
+    ========================= */
+    const handleSendText = async (text) => {
+    if (!text) return;
 
-    const handleClearChat = () => {
-        if (window.confirm("Are you sure you want to clear the chat?")) {
-            // Clear local state
-            setMessages([{ role: "agent", message: "Hi! I'm your ABFRL Assistant. Looking for something specific?" }]);
-            setDisplayedProducts([]);
-            setIsTyping(false);
-            setIsListening(false);
+    setInputMode("text");
+    setMessages(prev => [...prev, { role: "user", message: text }]);
+    await sendToAdapter(text, "text");
+};
 
-            // Clear session context
-            clearSession();
 
-            // Stop any ongoing speech
-            if (recognition) {
-                recognition.stop();
-            }
+    /* =========================
+       VOICE RECOGNITION (CONTINUOUS)
+    ========================= */
+    const recognition = useVoiceRecognition(language, async (spokenText) => {
+    if (!spokenText) return;
 
-            console.log("✅ Chat cleared successfully");
-        }
-    };
+    setInputMode("voice");
+
+    // ❌ DO NOT add spokenText to messages
+
+    await sendToAdapter(spokenText, "voice");
+
+    // 🔁 restart listening
+    if (isListening) {
+        setTimeout(() => recognition.start(), 500);
+    }
+});
+
 
     const toggleListening = () => {
         if (isListening) {
-            recognition?.stop();
+            recognition.stop();
             setIsListening(false);
         } else {
+            setInputMode("voice");
             setIsListening(true);
-            recognition?.start();
+            recognition.start();
         }
     };
 
+    /* =========================
+       CLEAR CHAT
+    ========================= */
+    const handleClearChat = () => {
+        if (!window.confirm("Are you sure you want to clear the chat?")) return;
+
+        recognition.stop();
+        clearSession();
+
+        setMessages([
+            { role: "agent", message: "Hi! I'm your ABFRL Assistant. Looking for something specific?" }
+        ]);
+        setDisplayedProducts([]);
+        setIsTyping(false);
+        setIsListening(false);
+        setInputMode("text");
+    };
+
     return (
-        <Box sx={{ height: "100%", display: "flex", flexDirection: "column", bgcolor: "#1e1e1e", borderLeft: "1px solid #333" }}>
-            {/* Agent Header */}
-            <Box sx={{
-                p: 2,
-                borderBottom: "1px solid rgba(255,255,255,0.1)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                bgcolor: "#252526"
-            }}>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <Avatar sx={{ bgcolor: "var(--accent-gold)", width: 24, height: 24, fontSize: 12, color: "black", fontWeight: "bold" }}>AI</Avatar>
-                    <Typography variant="subtitle2" sx={{ color: "#fff", fontWeight: 600 }}>ABFRL Agent</Typography>
+        <Box sx={{ height: "100%", display: "flex", flexDirection: "column", bgcolor: "#1e1e1e" }}>
+            {/* HEADER */}
+            <Box sx={{ p: 2, display: "flex", justifyContent: "space-between", bgcolor: "#252526" }}>
+                <Box display="flex" alignItems="center" gap={1}>
+                    <Avatar sx={{ bgcolor: "gold", width: 24, height: 24 }}>AI</Avatar>
+                    <Typography sx={{ color: "#fff", fontWeight: 600 }}>ABFRL Agent</Typography>
                 </Box>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <Box sx={{ width: 8, height: 8, borderRadius: "50%", bgcolor: "#4CAF50" }} /> {/* Online indicator */}
+                <Box display="flex" alignItems="center" gap={1}>
+                    <Typography variant="caption" sx={{ color: "gold" }}>
+                        {inputMode === "voice" ? "Voice mode" : "Text mode"}
+                    </Typography>
                     <LanguageSelector language={language} setLanguage={setLanguage} />
-                    <IconButton
-                        onClick={handleClearChat}
-                        size="small"
-                        sx={{
-                            color: "var(--accent-gold)",
-                            '&:hover': { bgcolor: "rgba(255, 230, 0, 0.1)" }
-                        }}
-                        title="Refresh Chat"
-                    >
+                    <IconButton onClick={handleClearChat} size="small" sx={{ color: "gold" }}>
                         <RefreshIcon fontSize="small" />
                     </IconButton>
                 </Box>
             </Box>
 
-            {/* Messages Area */}
-            <Box sx={{ flexGrow: 1, overflowY: "auto", p: 2, display: "flex", flexDirection: "column", gap: 2 }}>
-                {messages.map((msg, idx) => (
-                    <React.Fragment key={idx}>
-                        {msg.type === "product" ? (
-                            <Box display="flex" justifyContent="flex-start" sx={{ maxWidth: "100%" }}>
-                                <ProductCard product={msg.data} compact={true} />
-                            </Box>
-                        ) : (
-                            <MessageBubble message={msg.message} role={msg.role} />
-                        )}
-                    </React.Fragment>
+            {/* CHAT */}
+            <Box sx={{ flexGrow: 1, overflowY: "auto", p: 2 }}>
+                {messages.map((msg, i) => (
+                    <MessageBubble key={i} message={msg.message} role={msg.role} />
                 ))}
 
-                {/* Product Cards Section - Event-driven display */}
                 {displayedProducts.length > 0 && (
-                    <Box sx={{ mt: 2 }}>
-                        <Typography variant="caption" sx={{ color: "var(--accent-gold)", mb: 1, display: "block" }}>
+                    <Box mt={2}>
+                        <Typography variant="caption" sx={{ color: "gold" }}>
                             Recommended Products
                         </Typography>
-                        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                            {displayedProducts.map((product) => (
-                                <ProductCard key={product.sku} product={product} compact={true} />
-                            ))}
-                        </Box>
+                        {displayedProducts.map((p) => (
+                            <ProductCard key={p.sku} product={p} compact />
+                        ))}
                     </Box>
                 )}
 
                 {isTyping && (
-                    <Typography variant="caption" sx={{ color: "var(--text-muted)", ml: 1 }}>Agent is typing...</Typography>
+                    <Typography variant="caption" sx={{ color: "#888" }}>
+                        Agent is typing…
+                    </Typography>
                 )}
                 <div ref={messagesEndRef} />
             </Box>
 
-            {/* Input Area */}
-            <Box sx={{ p: 2, borderTop: "1px solid rgba(255,255,255,0.1)", bgcolor: "#252526" }}>
-                <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-                    <IconButton onClick={toggleListening} size="small" sx={{ color: isListening ? "var(--accent-gold)" : "gray" }}>
-                        {isListening ? <GraphicEqIcon /> : <MicIcon />}
-                    </IconButton>
-                    <Box sx={{ flexGrow: 1 }}>
-                        <UserInput onSend={handleSend} disabled={isListening} placeholder="Ask me anything..." dense={true} />
-                    </Box>
-                </Box>
+            {/* INPUT */}
+            <Box sx={{ p: 2, display: "flex", gap: 1, bgcolor: "#252526" }}>
+                <IconButton onClick={toggleListening} sx={{ color: isListening ? "gold" : "gray" }}>
+                    {isListening ? <GraphicEqIcon /> : <MicIcon />}
+                </IconButton>
+                <UserInput
+                    onSend={handleSendText}
+                    disabled={isListening}
+                    placeholder="Ask me anything…"
+                    dense
+                />
             </Box>
         </Box>
     );

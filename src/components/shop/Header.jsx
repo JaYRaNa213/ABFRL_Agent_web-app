@@ -12,7 +12,7 @@ export default function Header() {
 
     return (
         <AppBar position="sticky" sx={{ bgcolor: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-            <Toolbar sx={{ justifyContent: 'space-between' }}>
+            <Toolbar sx={{ justifyContent: 'space-between', minHeight: { xs: 56, sm: 64 }, px: { xs: 1, sm: 2 } }}>
                 {/* Brand */}
                 <Typography
                     variant="h5"
@@ -22,7 +22,8 @@ export default function Header() {
                         cursor: 'pointer',
                         fontWeight: 700,
                         letterSpacing: 1,
-                        color: 'white'
+                        color: 'white',
+                        fontSize: { xs: '1.2rem', sm: '1.5rem', md: '1.75rem' }
                     }}
                 >
                     ABFRL <span style={{ color: '#FFE600', fontSize: '0.8em' }}>LIFESTYLE</span>
@@ -33,7 +34,7 @@ export default function Header() {
                     {['HOME'].map((item) => (
                         <Button
                             key={item}
-                            onClick={() => navigate('/')} // Mock nav for now
+                            onClick={() => navigate('/')}
                             sx={{
                                 color: 'white',
                                 fontWeight: 500,
@@ -49,7 +50,7 @@ export default function Header() {
                     {['PRODUCTS', 'ABOUT US'].map((item) => (
                         <Button
                             key={item}
-                            onClick={() => navigate('/products')} // Mock nav for now
+                            onClick={() => navigate('/products')}
                             sx={{
                                 color: 'white',
                                 fontWeight: 500,
@@ -62,16 +63,27 @@ export default function Header() {
                     ))}
                 </Box>
 
-                {/* Actions */}
-                <Box sx={{ display: 'flex', gap: 1 }}>
-                    <IconButton sx={{ color: 'white' }}>
+                {/* Actions - Responsive */}
+                <Box sx={{ display: 'flex', gap: { xs: 0.5, sm: 1 } }}>
+                    <IconButton
+                        sx={{ color: 'white', display: { xs: 'none', sm: 'inline-flex' } }}
+                    >
                         <SearchOutlinedIcon />
                     </IconButton>
-                    <IconButton sx={{ color: 'white' }} onClick={() => navigate('/profile')}>
+                    <IconButton
+                        sx={{ color: 'white' }}
+                        onClick={() => navigate('/profile')}
+                    >
                         <PersonOutlineOutlinedIcon />
                     </IconButton>
-                    <IconButton sx={{ color: 'white' }} onClick={() => navigate('/cart')}>
-                        <Badge badgeContent={cart.length} sx={{ '& .MuiBadge-badge': { bgcolor: '#FFE600', color: 'black' } }}>
+                    <IconButton
+                        sx={{ color: 'white' }}
+                        onClick={() => navigate('/cart')}
+                    >
+                        <Badge
+                            badgeContent={cart.length}
+                            sx={{ '& .MuiBadge-badge': { bgcolor: '#FFE600', color: 'black' } }}
+                        >
                             <ShoppingBagOutlinedIcon />
                         </Badge>
                     </IconButton>

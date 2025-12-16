@@ -1,7 +1,7 @@
 [
   {
     "sku": "SHIRT001",
-    "name": "Formal Slim Fit Shirt",
+    "name": "Formal  Shirt",
     "brand": "Louis Philippe",
     "category": "Men",
     "subCategory": "Formal Wear",
@@ -66,7 +66,7 @@
   },
   {
     "sku": "TOP004hd",
-    "name": "Party Wear Blazer",
+    "name": "T shirt",
     "brand": "Van Heusen",
     "category": "Men",
     "subCategory": "Party Wear",
@@ -83,7 +83,7 @@
       "party",
       "evening"
     ],
-    "image": "https://images.unsplash.com/photo-1617127365659-c47fa864fbe5?auto=format&fit=crop&q=80&w=800"
+    "image": "https://images.unsplash.com/photo-1622445275463-afa2ab738c34"
   },
   {
     "sku": "TOP005hd",
@@ -107,25 +107,564 @@
     "image": "https://images.unsplash.com/photo-1620799139507-2a76f79a2f4d?auto=format&fit=crop&q=80&w=800"
   },
   {
-    "sku": "TOP006hd",
-    "name": "Women Ethnic Kurti",
-    "brand": "Biba",
+    "sku": "KUR001",
+    "name": "Men Cotton Printed Kurta",
+    "brand": "Manyavar",
+    "category": "Men",
+    "subCategory": "Kurta",
+    "price": 1999,
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Blue"
+    ],
+    "tags": [
+      "ethnic",
+      "festive"
+    ],
+    "image": "https://images.unsplash.com/photo-1622445275463-afa2ab738c34"
+  },
+  {
+    "sku": "KUR002",
+    "name": "Solid Straight Kurta",
+    "brand": "Fabindia",
+    "category": "Men",
+    "subCategory": "Kurta",
+    "price": 1799,
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "White"
+    ],
+    "tags": [
+      "traditional"
+    ],
+    "image": "https://images.unsplash.com/photo-1593032465175-481ac7f401a0"
+  },
+  {
+    "sku": "KUR003",
+    "name": "Festive Silk Kurta",
+    "brand": "Sojanya",
+    "category": "Men",
+    "subCategory": "Kurta",
+    "price": 2499,
+    "sizes": [
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Maroon"
+    ],
+    "tags": [
+      "wedding",
+      "ethnic"
+    ],
+    "image": "https://images.unsplash.com/photo-1607346256330-dee7af15f7c5"
+  },
+  {
+    "sku": "SHO001",
+    "name": "Men Leather Formal Shoes",
+    "brand": "Hush Puppies",
+    "category": "Men",
+    "subCategory": "Shoes",
+    "price": 3499,
+    "sizes": [
+      "8",
+      "9",
+      "10"
+    ],
+    "colors": [
+      "Brown"
+    ],
+    "tags": [
+      "formal",
+      "office"
+    ],
+    "image": "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4"
+  },
+  {
+    "sku": "SHO002",
+    "name": "Casual Sneakers",
+    "brand": "Puma",
+    "category": "Men",
+    "subCategory": "Shoes",
+    "price": 2999,
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10"
+    ],
+    "colors": [
+      "White"
+    ],
+    "tags": [
+      "casual",
+      "daily"
+    ],
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff"
+  },
+  {
+    "sku": "SHO003",
+    "name": "Running Sports Shoes",
+    "brand": "Nike",
+    "category": "Men",
+    "subCategory": "Shoes",
+    "price": 4999,
+    "sizes": [
+      "8",
+      "9",
+      "10"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "tags": [
+      "sports",
+      "running"
+    ],
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff"
+  },
+  {
+    "sku": "WAT001",
+    "name": "Analog Leather Watch",
+    "brand": "Titan",
+    "category": "Unisex",
+    "subCategory": "Watches",
+    "price": 2599,
+    "sizes": [
+      "Free"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "tags": [
+      "formal"
+    ],
+    "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30"
+  },
+  {
+    "sku": "WAT002",
+    "name": "Smart Watch Series 5",
+    "brand": "Noise",
+    "category": "Unisex",
+    "subCategory": "Watches",
+    "price": 3999,
+    "sizes": [
+      "Free"
+    ],
+    "colors": [
+      "Grey"
+    ],
+    "tags": [
+      "smart",
+      "fitness"
+    ],
+    "image": "https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b"
+  },
+  {
+    "sku": "WAT003",
+    "name": "Metal Strap Watch",
+    "brand": "Fossil",
+    "category": "Men",
+    "subCategory": "Watches",
+    "price": 7499,
+    "sizes": [
+      "Free"
+    ],
+    "colors": [
+      "Silver"
+    ],
+    "tags": [
+      "luxury"
+    ],
+    "image": "https://images.unsplash.com/photo-1508057198894-247b23fe5ade"
+  },
+  {
+    "sku": "PAN001",
+    "name": "Slim Fit Formal Pants",
+    "brand": "Van Heusen",
+    "category": "Men",
+    "subCategory": "Pants",
+    "price": 2299,
+    "sizes": [
+      "30",
+      "32",
+      "34"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "tags": [
+      "office"
+    ],
+    "image": "https://images.unsplash.com/photo-1598032895397-b9472444bf93"
+  },
+  {
+    "sku": "PAN002",
+    "name": "Cotton Chinos",
+    "brand": "Allen Solly",
+    "category": "Men",
+    "subCategory": "Pants",
+    "price": 1999,
+    "sizes": [
+      "30",
+      "32",
+      "34"
+    ],
+    "colors": [
+      "Beige"
+    ],
+    "tags": [
+      "casual"
+    ],
+    "image": "https://images.unsplash.com/photo-1583001809873-a128495da465"
+  },
+  {
+    "sku": "JEA001",
+    "name": "Slim Fit Blue Jeans",
+    "brand": "Levi's",
+    "category": "Men",
+    "subCategory": "Jeans",
+    "price": 2799,
+    "sizes": [
+      "30",
+      "32",
+      "34"
+    ],
+    "colors": [
+      "Blue"
+    ],
+    "tags": [
+      "casual"
+    ],
+    "image": "https://images.unsplash.com/photo-1542272604-787c3835535d"
+  },
+  {
+    "sku": "JEA002",
+    "name": "Stretch Denim Jeans",
+    "brand": "Wrangler",
+    "category": "Men",
+    "subCategory": "Jeans",
+    "price": 2499,
+    "sizes": [
+      "30",
+      "32"
+    ],
+    "colors": [
+      "Dark Blue"
+    ],
+    "tags": [
+      "daily"
+    ],
+    "image": "https://images.unsplash.com/photo-1516826957135-700dedea698c"
+  },
+  {
+    "sku": "JEA003",
+    "name": "Washed Skinny Jeans",
+    "brand": "Pepe Jeans",
+    "category": "Men",
+    "subCategory": "Jeans",
+    "price": 2699,
+    "sizes": [
+      "32",
+      "34"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "tags": [
+      "fashion"
+    ],
+    "image": "https://images.unsplash.com/photo-1582552938357-32b906df40cb"
+  },
+  {
+    "sku": "BLZ001",
+    "name": "Formal Slim Fit Blazer",
+    "brand": "Louis Philippe",
+    "category": "Men",
+    "subCategory": "Blazer",
+    "price": 6999,
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Navy"
+    ],
+    "tags": [
+      "formal"
+    ],
+    "image": "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7"
+  },
+  {
+    "sku": "BLZ002",
+    "name": "Textured Party Blazer",
+    "brand": "Blackberrys",
+    "category": "Men",
+    "subCategory": "Blazer",
+    "price": 7499,
+    "sizes": [
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Grey"
+    ],
+    "tags": [
+      "party"
+    ],
+    "image": "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f"
+  },
+  {
+    "sku": "BLZ003",
+    "name": "Casual Blazer",
+    "brand": "Arrow",
+    "category": "Men",
+    "subCategory": "Blazer",
+    "price": 6299,
+    "sizes": [
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "tags": [
+      "semi-formal"
+    ],
+    "image": "https://images.unsplash.com/photo-1520975916090-3105956dac38"
+  },
+  {
+    "sku": "MOB001",
+    "name": "Galaxy S23",
+    "brand": "Samsung",
+    "category": "Electronics",
+    "subCategory": "Mobiles",
+    "price": 74999,
+    "sizes": [
+      "128GB"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "tags": [
+      "smartphone"
+    ],
+    "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9"
+  },
+  {
+    "sku": "MOB002",
+    "name": "iPhone 14",
+    "brand": "Apple",
+    "category": "Electronics",
+    "subCategory": "Mobiles",
+    "price": 79999,
+    "sizes": [
+      "128GB"
+    ],
+    "colors": [
+      "Blue"
+    ],
+    "tags": [
+      "ios"
+    ],
+    "image": "https://images.unsplash.com/photo-1512499617640-c2f999feae2f"
+  },
+  {
+    "sku": "MOB003",
+    "name": "Redmi Note 13",
+    "brand": "Xiaomi",
+    "category": "Electronics",
+    "subCategory": "Mobiles",
+    "price": 17999,
+    "sizes": [
+      "128GB"
+    ],
+    "colors": [
+      "Green"
+    ],
+    "tags": [
+      "budget"
+    ],
+    "image": "https://images.unsplash.com/photo-1598327105666-5b89351aff97"
+  },
+  {
+    "sku": "BOT001",
+    "name": "Stainless Steel Water Bottle",
+    "brand": "Milton",
+    "category": "Home",
+    "subCategory": "Bottles",
+    "price": 799,
+    "sizes": [
+      "1L"
+    ],
+    "colors": [
+      "Silver"
+    ],
+    "tags": [
+      "eco"
+    ],
+    "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8"
+  },
+  {
+    "sku": "BOT002",
+    "name": "Insulated Flask",
+    "brand": "Cello",
+    "category": "Home",
+    "subCategory": "Bottles",
+    "price": 1299,
+    "sizes": [
+      "750ml"
+    ],
+    "colors": [
+      "Blue"
+    ],
+    "tags": [
+      "hot-cold"
+    ],
+    "image": "https://images.unsplash.com/photo-1526401281623-279b498f10c2"
+  },
+  {
+    "sku": "BOT003",
+    "name": "Plastic Gym Bottle",
+    "brand": "Nike",
+    "category": "Sports",
+    "subCategory": "Bottles",
+    "price": 999,
+    "sizes": [
+      "800ml"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "tags": [
+      "fitness"
+    ],
+    "image": "https://images.unsplash.com/photo-1558611848-73f7eb4001a1"
+  },
+  {
+    "sku": "SHT001",
+    "name": "Slim Fit Formal Shirt",
+    "brand": "Louis Philippe",
+    "category": "Men",
+    "subCategory": "Shirts",
+    "price": 2599,
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "White"
+    ],
+    "tags": [
+      "office"
+    ],
+    "image": "https://images.unsplash.com/photo-1603252109303-2751441dd157"
+  },
+  {
+    "sku": "SHT002",
+    "name": "Checked Casual Shirt",
+    "brand": "Roadster",
+    "category": "Men",
+    "subCategory": "Shirts",
+    "price": 1499,
+    "sizes": [
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Red"
+    ],
+    "tags": [
+      "casual"
+    ],
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"
+  },
+  {
+    "sku": "SHT003",
+    "name": "Denim Shirt",
+    "brand": "Levi's",
+    "category": "Men",
+    "subCategory": "Shirts",
+    "price": 2299,
+    "sizes": [
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Blue"
+    ],
+    "tags": [
+      "trendy"
+    ],
+    "image": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f"
+  },
+  {
+    "sku": "GST001",
+    "name": "Women Formal Pant Suit",
+    "brand": "Van Heusen",
     "category": "Women",
-    "subCategory": "Ethnic Wear",
-    "price": 1899,
+    "subCategory": "Suits",
+    "price": 7999,
     "sizes": [
       "S",
       "M",
       "L"
     ],
     "colors": [
-      "Yellow"
+      "Black"
     ],
     "tags": [
-      "ethnic",
-      "daily wear"
+      "office"
     ],
-    "image": "https://images.unsplash.com/photo-1583391733956-6c78276477e2?auto=format&fit=crop&q=80&w=800"
+    "image": "https://images.unsplash.com/photo-1592878849122-6d7bfa2b1b16"
+  },
+  {
+    "sku": "GST002",
+    "name": "Ethnic Suit Set",
+    "brand": "Biba",
+    "category": "Women",
+    "subCategory": "Suits",
+    "price": 3499,
+    "sizes": [
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Pink"
+    ],
+    "tags": [
+      "ethnic"
+    ],
+    "image": "https://images.unsplash.com/photo-1618354691373-d851c5c3a990"
+  },
+  {
+    "sku": "GST003",
+    "name": "Party Wear Suit",
+    "brand": "W",
+    "category": "Women",
+    "subCategory": "Suits",
+    "price": 4599,
+    "sizes": [
+      "S",
+      "M"
+    ],
+    "colors": [
+      "Green"
+    ],
+    "tags": [
+      "party"
+    ],
+    "image": "https://images.unsplash.com/photo-1608748010899-18f300247112"
   },
   {
     "sku": "TOP007hd",
