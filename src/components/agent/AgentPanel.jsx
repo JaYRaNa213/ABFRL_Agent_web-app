@@ -32,6 +32,7 @@ export default function AgentPanel() {
 
     // MODE: text | voice
     const [inputMode, setInputMode] = useState("text");
+    const [hasGreetedInVoiceMode, setHasGreetedInVoiceMode] = useState(false);
 
     const languageRef = useRef(language);
     const adaptersRef = useRef({});
@@ -139,6 +140,21 @@ export default function AgentPanel() {
             setInputMode("voice");
             setIsListening(true);
             recognition.start();
+
+            // 🔊 Greet user when voice mode is activated (only first time)
+            if (!hasGreetedInVoiceMode) {
+                const greetingMessage = "Hello! I'm listening. How can I help you today?";
+                speak(greetingMessage, languageRef.current);
+
+                // Add greeting to chat (optional visual feedback)
+                const greetingMsg = {
+                    role: "agent",
+                    message: greetingMessage,
+                    products: []
+                };
+                setMessages(prev => [...prev, greetingMsg]);
+                setHasGreetedInVoiceMode(true);
+            }
         }
     };
 
@@ -157,6 +173,7 @@ export default function AgentPanel() {
         setIsTyping(false);
         setIsListening(false);
         setInputMode("text");
+        setHasGreetedInVoiceMode(false); // Reset greeting flag
     };
 
     return (
