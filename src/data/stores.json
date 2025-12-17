@@ -1,24 +1,52 @@
 [
-    {
-        "id": "s1",
-        "name": "ABFRL Flagship Store - Indiranagar",
-        "city": "Bangalore",
-        "address": "100 Feet Road, Indiranagar, Bangalore",
-        "phone": "080-12345678",
-        "coordinates": {
-            "lat": 12.9716,
-            "lng": 77.5946
-        }
-    },
-    {
-        "id": "s2",
-        "name": "Phoenix Marketcity - Whitefield",
-        "city": "Bangalore",
-        "address": "Mahadevapura, Whitefield Main Road, Bangalore",
-        "phone": "080-87654321",
-        "coordinates": {
-            "lat": 12.9956,
-            "lng": 77.6970
-        }
-    }
+  {
+    "storeId": "STORE001",
+    "name": "Orion Mall",
+    "city": "Bengaluru"
+  },
+  {
+    "storeId": "STORE002",
+    "name": "Forum Mall",
+    "city": "Bengaluru"
+  },
+  {
+    "storeId": "STORE003",
+    "name": "Phoenix Mall",
+    "city": "Mumbai"
+  },
+  {
+    "storeId": "STORE004",
+    "name": "Delhi Mall",
+    "city": "Delhi"
+  },
+  {
+    "storeId": "STORE005",
+    "name": "Rama Mall",
+    "city": "Chennai"
+  },
+  {
+    "storeId": "STORE006",
+    "name": "AAM Mall",
+    "city": "Hyderabad"
+  },
+  {
+    "storeId": "STORE007",
+    "name": "Chandigarh Plaza",
+    "city": "Chandigarh"
+  },
+  {
+    "storeId": "STORE008",
+    "name": "Kali Mall",
+    "city": "Kolkata"
+  },
+  {
+    "storeId": "STORE009",
+    "name": "Judio Mall",
+    "city": "Jaipur"
+  },
+  {
+    "storeId": "STORE010",
+    "name": "Judio Mall Kochi",
+    "city": "Kochi"
+  }
 ]

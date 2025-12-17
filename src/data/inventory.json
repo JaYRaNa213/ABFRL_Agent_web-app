@@ -1,58 +1,161 @@
 {
-    "p1": {
-        "online": 15,
-        "stores": {
-            "s1": 2,
-            "s2": 5
-        }
-    },
-    "p2": {
-        "online": 50,
-        "stores": {
-            "s1": 10,
-            "s2": 10
-        }
-    },
-    "p3": {
-        "online": 30,
-        "stores": {
-            "s1": 5,
-            "s2": 8
-        }
-    },
-    "p4": {
-        "online": 5,
-        "stores": {
-            "s1": 1,
-            "s2": 0
-        }
-    },
-    "p5": {
-        "online": 20,
-        "stores": {
-            "s1": 4,
-            "s2": 6
-        }
-    },
-    "p6": {
-        "online": 25,
-        "stores": {
-            "s1": 8,
-            "s2": 3
-        }
-    },
-    "p7": {
-        "online": 10,
-        "stores": {
-            "s1": 2,
-            "s2": 1
-        }
-    },
-    "p8": {
-        "online": 100,
-        "stores": {
-            "s1": 20,
-            "s2": 15
-        }
+  "SHIRT001": {
+    "online": 25,
+    "stores": {
+      "Orion Mall": 6,
+      "Forum Mall": 2
     }
+  },
+  "SHIRT002": {
+    "online": 0,
+    "stores": {
+      "Orion Mall": 1
+    }
+  },
+  "SHIRT003": {
+    "online": 10,
+    "stores": {
+      "Phoenix Mall": 5
+    }
+  },
+  "SHIRT004": {
+    "online": 5,
+    "stores": {
+      "Orion Mall": 2,
+      "Forum Mall": 0
+    }
+  },
+  "TROUSER001": {
+    "online": 15,
+    "stores": {
+      "Orion Mall": 4,
+      "kali Mall": 4
+    }
+  },
+  "TROUSER002": {
+    "online": 8,
+    "stores": {
+      "judio Mall": 3
+    }
+  },
+  "TROUSER003": {
+    "online": 12,
+    "stores": {
+      "Rama Mall": 2
+    }
+  },
+  "BLAZER001": {
+    "online": 3,
+    "stores": {
+      "Forum Mall": 0
+    }
+  },
+  "BLAZER002": {
+    "online": 7,
+    "stores": {
+      "Orion Mall": 1,
+      "Phoenix Mall": 2
+    }
+  },
+  "DRESS001": {
+    "online": 12,
+    "stores": {
+      "Phoenix Mall": 4
+    }
+  },
+  "DRESS002": {
+    "online": 20,
+    "stores": {
+      "Orion Mall": 5
+    }
+  },
+  "DRESS003": {
+    "online": 4,
+    "stores": {
+      "Forum Mall": 1
+    }
+  },
+  "KURTA001": {
+    "online": 18,
+    "stores": {
+      "Orion Mall": 3,
+      "Phoenix Mall": 6
+    }
+  },
+  "KURTA002": {
+    "online": 6,
+    "stores": {
+      "Forum Mall": 2
+    }
+  },
+  "KURTA003": {
+    "online": 30,
+    "stores": {
+      "Orion Mall": 10
+    }
+  },
+  "TOP001": {
+    "online": 25,
+    "stores": {
+      "Phoenix Mall": 5
+    }
+  },
+  "TOP002": {
+    "online": 14,
+    "stores": {
+      "Orion Mall": 2,
+      "Forum Mall": 2
+    }
+  },
+  "TOP003": {
+    "online": 5,
+    "stores": {
+      "Phoenix Mall": 0
+    }
+  },
+  "JACKET001": {
+    "online": 2,
+    "stores": {
+      "Orion Mall": 1
+    }
+  },
+  "JACKET002": {
+    "online": 6,
+    "stores": {
+      "Forum Mall": 1
+    }
+  },
+  "JEANS001": {
+    "online": 100,
+    "stores": {
+      "Orion Mall": 20,
+      "Forum Mall": 15,
+      "Phoenix Mall": 15
+    }
+  },
+  "JEANS002": {
+    "online": 50,
+    "stores": {
+      "Phoenix Mall": 10
+    }
+  },
+  "TSHIRT001": {
+    "online": 40,
+    "stores": {
+      "Orion Mall": 5,
+      "Forum Mall": 5
+    }
+  },
+  "TSHIRT002": {
+    "online": 35,
+    "stores": {
+      "Phoenix Mall": 8
+    }
+  },
+  "SKIRT001": {
+    "online": 10,
+    "stores": {
+      "Orion Mall": 2
+    }
+  }
 }

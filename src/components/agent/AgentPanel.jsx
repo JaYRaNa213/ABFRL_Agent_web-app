@@ -21,19 +21,31 @@ import { speak } from "../../utils/speak.js";
 
 export default function AgentPanel() {
     const { sessionId, channel, setLastAgentResponse, clearSession } = useSession();
-    const { setCart } = useCart();
+    const { setCart, setIsCartOpen } = useCart();
 
-    const [messages, setMessages] = useState([
-        { role: "agent", message: "Hi! I'm your ABFRL Assistant. Looking for something specific?" }
-    ]);
+    // Load messages from localStorage or use default greeting
+    const [messages, setMessages] = useState(() => {
+        const savedMessages = localStorage.getItem(`abfrl_chat_${sessionId}`);
+        if (savedMessages) {
+            try {
+                return JSON.parse(savedMessages);
+            } catch (e) {
+                console.error("Failed to parse saved messages:", e);
+            }
+        }
+        return [
+            { role: "agent", message: "Hi! I'm your ABFRL Assistant. Looking for something specific?", products: [] }
+        ];
+    });
 
-    const [displayedProducts, setDisplayedProducts] = useState([]);
     const [isTyping, setIsTyping] = useState(false);
-    const [isListening, setIsListening] = useState(false);
+    // const [isListening, setIsListening] = useState(false); // Validated: Replaced by hook
+    const [isSpeaking, setIsSpeaking] = useState(false);
     const [language, setLanguage] = useState("en-IN");
 
     // MODE: text | voice
     const [inputMode, setInputMode] = useState("text");
+    const [hasGreetedInVoiceMode, setHasGreetedInVoiceMode] = useState(false);
 
     const languageRef = useRef(language);
     const adaptersRef = useRef({});
@@ -43,54 +55,18 @@ export default function AgentPanel() {
         languageRef.current = language;
     }, [language]);
 
+    // Save messages to localStorage whenever they change
+    useEffect(() => {
+        localStorage.setItem(`abfrl_chat_${sessionId}`, JSON.stringify(messages));
+    }, [messages, sessionId]);
+
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages, isTyping, displayedProducts]);
+    }, [messages, isTyping]);
 
     /* =========================
        AGENT RESPONSE HANDLER
     ========================= */
-    const handleAgentReply = (response) => {
-        setIsTyping(false);
-        setLastAgentResponse(response);
-
-        // TEXT RESPONSE (both modes)
-        if (response.reply) {
-            setMessages((prev) => [...prev, { role: "agent", message: response.reply }]);
-        }
-
-        // 🔊 SPEAK ONLY IN VOICE MODE
-        if (inputMode === "voice" && response.reply) {
-            speak(response.reply, languageRef.current);
-        }
-
-        // 🛍️ SHOW PRODUCTS IN BOTH MODES
-        if (
-            response.action === "SHOW_PRODUCTS" &&
-            response.target === "AgentPanel" &&
-            response.products?.length
-        ) {
-            setDisplayedProducts(response.products);
-        } else {
-            setDisplayedProducts([]);
-        }
-
-        if (response.cart) {
-            setCart(response.cart);
-        }
-    };
-
-    /* =========================
-       ADAPTER SETUP
-    ========================= */
-    useEffect(() => {
-        adaptersRef.current = {
-            web: new WebAdapter(handleAgentReply),
-            whatsapp: new WhatsAppAdapter(handleAgentReply),
-            kiosk: new KioskAdapter(handleAgentReply),
-        };
-    }, []);
-
     /* =========================
        SEND TO ADAPTER
     ========================= */
@@ -109,41 +85,127 @@ export default function AgentPanel() {
        TEXT SEND
     ========================= */
     const handleSendText = async (text) => {
-    if (!text) return;
+        if (!text) return;
 
-    setInputMode("text");
-    setMessages(prev => [...prev, { role: "user", message: text }]);
-    await sendToAdapter(text, "text");
-};
-
+        setInputMode("text");
+        setMessages(prev => [...prev, { role: "user", message: text, products: [] }]);
+        await sendToAdapter(text, "text");
+    };
 
     /* =========================
        VOICE RECOGNITION (CONTINUOUS)
     ========================= */
-    const recognition = useVoiceRecognition(language, async (spokenText) => {
-    if (!spokenText) return;
+    const { isListening, startListening, stopListening } = useVoiceRecognition(language, async (spokenText) => {
+        if (!spokenText) return;
 
-    setInputMode("voice");
+        setInputMode("voice");
 
-    // ❌ DO NOT add spokenText to messages
+        // Send to adapter - handleAgentReply will manage recognition restart
+        await sendToAdapter(spokenText, "voice");
+    });
 
-    await sendToAdapter(spokenText, "voice");
+    /* =========================
+       AGENT RESPONSE HANDLER
+    ========================= */
+    const handleAgentReply = async (response) => {
+        setIsTyping(false);
+        setLastAgentResponse(response);
 
-    // 🔁 restart listening
-    if (isListening) {
-        setTimeout(() => recognition.start(), 500);
-    }
-});
+        const agentMessage = {
+            role: "agent",
+            message: response.reply || "",
+            products:
+                response.action === "SHOW_PRODUCTS" &&
+                    response.target === "AgentPanel" &&
+                    response.products?.length
+                    ? response.products
+                    : []
+        };
+
+        setMessages(prev => [...prev, agentMessage]);
+
+        // 🔊 Handle voice mode
+        if (inputMode === "voice") {
+            // STOP listening before speaking to avoid feedback/browser issues
+            stopListening();
+
+            if (response.reply) {
+                setIsSpeaking(true);
+
+                // Speak and wait for completion
+                await speak(response.reply, languageRef.current);
+
+                setIsSpeaking(false);
+
+                // Resume listening after agent finishes speaking
+                // Small delay to ensure synthesis is fully teardown
+                setTimeout(() => {
+                    console.log("Resuming listening after agent reply...");
+                    startListening();
+                }, 100);
+            } else {
+                // Agent has no speech; just restart listening immediately
+                setTimeout(() => {
+                    startListening();
+                }, 100);
+            }
+        }
+
+        if (response.cart) {
+            setCart(response.cart);
+        }
+
+        if (response.action === "ADD_TO_CART_CONFIRMED") {
+            // Force open cart sidebar so user sees the addition
+            setIsCartOpen(true);
+        }
+    };
+
+    /* =========================
+       ADAPTER SETUP
+    ========================= */
+    useEffect(() => {
+        adaptersRef.current = {
+            web: new WebAdapter(handleAgentReply),
+            whatsapp: new WhatsAppAdapter(handleAgentReply),
+            kiosk: new KioskAdapter(handleAgentReply),
+        };
+    }, []);
 
 
-    const toggleListening = () => {
+    const toggleListening = async () => {
         if (isListening) {
-            recognition.stop();
-            setIsListening(false);
+            stopListening();
+            window.speechSynthesis.cancel(); // Stop any ongoing speech
         } else {
             setInputMode("voice");
-            setIsListening(true);
-            recognition.start();
+
+            // 🔊 Greet user when voice mode is activated (only first time)
+            if (!hasGreetedInVoiceMode) {
+                const greetingMessage = "Hello! I'm listening. How can I help you today?";
+
+                // Add greeting to chat (optional visual feedback)
+                const greetingMsg = {
+                    role: "agent",
+                    message: greetingMessage,
+                    products: []
+                };
+                setMessages(prev => [...prev, greetingMsg]);
+                setHasGreetedInVoiceMode(true);
+
+                // Speak greeting and wait for it to finish
+                setIsSpeaking(true);
+                await speak(greetingMessage, languageRef.current);
+                setIsSpeaking(false);
+
+                // Start listening after greeting finishes
+                setTimeout(() => {
+                    startListening();
+                }, 300);
+            } else {
+                // No greeting, start listening immediately
+                startListening();
+            }
         }
     };
 
@@ -153,16 +215,21 @@ export default function AgentPanel() {
     const handleClearChat = () => {
         if (!window.confirm("Are you sure you want to clear the chat?")) return;
 
-        recognition.stop();
+        stopListening();
         clearSession();
 
+        // Clear messages from state
         setMessages([
-            { role: "agent", message: "Hi! I'm your ABFRL Assistant. Looking for something specific?" }
+            { role: "agent", message: "Hi! I'm your ABFRL Assistant. Looking for something specific?", products: [] }
         ]);
-        setDisplayedProducts([]);
+
+        // Clear messages from localStorage
+        localStorage.removeItem(`abfrl_chat_${sessionId}`);
+
         setIsTyping(false);
         setIsListening(false);
         setInputMode("text");
+        setHasGreetedInVoiceMode(false); // Reset greeting flag
     };
 
     return (
@@ -187,23 +254,31 @@ export default function AgentPanel() {
             {/* CHAT */}
             <Box sx={{ flexGrow: 1, overflowY: "auto", p: 2 }}>
                 {messages.map((msg, i) => (
-                    <MessageBubble key={i} message={msg.message} role={msg.role} />
-                ))}
+                    <Box key={i} mb={2}>
+                        <MessageBubble message={msg.message} role={msg.role} />
 
-                {displayedProducts.length > 0 && (
-                    <Box mt={2}>
-                        <Typography variant="caption" sx={{ color: "gold" }}>
-                            Recommended Products
-                        </Typography>
-                        {displayedProducts.map((p) => (
-                            <ProductCard key={p.sku} product={p} compact />
-                        ))}
+                        {msg.products?.length > 0 && (
+                            <Box mt={1}>
+                                <Typography variant="caption" sx={{ color: "gold" }}>
+                                    Recommended Products
+                                </Typography>
+                                {msg.products.map((p) => (
+                                    <ProductCard key={p.sku} product={p} compact />
+                                ))}
+                            </Box>
+                        )}
                     </Box>
-                )}
+                ))}
 
                 {isTyping && (
                     <Typography variant="caption" sx={{ color: "#888" }}>
                         Agent is typing…
+                    </Typography>
+                )}
+
+                {isSpeaking && (
+                    <Typography variant="caption" sx={{ color: "gold" }}>
+                        🔊 Agent is speaking…
                     </Typography>
                 )}
                 <div ref={messagesEndRef} />
@@ -216,7 +291,7 @@ export default function AgentPanel() {
                 </IconButton>
                 <UserInput
                     onSend={handleSendText}
-                    disabled={isListening}
+                    // disabled={isListening} // Don't block input
                     placeholder="Ask me anything…"
                     dense
                 />
