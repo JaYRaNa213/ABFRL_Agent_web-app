@@ -24,10 +24,8 @@ export default function AgentPanel() {
     const { setCart } = useCart();
 
     const [messages, setMessages] = useState([
-        { role: "agent", message: "Hi! I'm your ABFRL Assistant. Looking for something specific?" }
+        { role: "agent", message: "Hi! I'm your ABFRL Assistant. Looking for something specific?", products: [] }
     ]);
-
-    const [displayedProducts, setDisplayedProducts] = useState([]);
     const [isTyping, setIsTyping] = useState(false);
     const [isListening, setIsListening] = useState(false);
     const [language, setLanguage] = useState("en-IN");
@@ -45,7 +43,7 @@ export default function AgentPanel() {
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages, isTyping, displayedProducts]);
+    }, [messages, isTyping]);
 
     /* =========================
        AGENT RESPONSE HANDLER
@@ -54,25 +52,22 @@ export default function AgentPanel() {
         setIsTyping(false);
         setLastAgentResponse(response);
 
-        // TEXT RESPONSE (both modes)
-        if (response.reply) {
-            setMessages((prev) => [...prev, { role: "agent", message: response.reply }]);
-        }
+        const agentMessage = {
+            role: "agent",
+            message: response.reply || "",
+            products:
+                response.action === "SHOW_PRODUCTS" &&
+                    response.target === "AgentPanel" &&
+                    response.products?.length
+                    ? response.products
+                    : []
+        };
 
-        // 🔊 SPEAK ONLY IN VOICE MODE
+        setMessages(prev => [...prev, agentMessage]);
+
+        // 🔊 Speak only in voice mode
         if (inputMode === "voice" && response.reply) {
             speak(response.reply, languageRef.current);
-        }
-
-        // 🛍️ SHOW PRODUCTS IN BOTH MODES
-        if (
-            response.action === "SHOW_PRODUCTS" &&
-            response.target === "AgentPanel" &&
-            response.products?.length
-        ) {
-            setDisplayedProducts(response.products);
-        } else {
-            setDisplayedProducts([]);
         }
 
         if (response.cart) {
@@ -109,31 +104,31 @@ export default function AgentPanel() {
        TEXT SEND
     ========================= */
     const handleSendText = async (text) => {
-    if (!text) return;
+        if (!text) return;
 
-    setInputMode("text");
-    setMessages(prev => [...prev, { role: "user", message: text }]);
-    await sendToAdapter(text, "text");
-};
+        setInputMode("text");
+        setMessages(prev => [...prev, { role: "user", message: text, products: [] }]);
+        await sendToAdapter(text, "text");
+    };
 
 
     /* =========================
        VOICE RECOGNITION (CONTINUOUS)
     ========================= */
     const recognition = useVoiceRecognition(language, async (spokenText) => {
-    if (!spokenText) return;
+        if (!spokenText) return;
 
-    setInputMode("voice");
+        setInputMode("voice");
 
-    // ❌ DO NOT add spokenText to messages
+        // ❌ DO NOT add spokenText to messages
 
-    await sendToAdapter(spokenText, "voice");
+        await sendToAdapter(spokenText, "voice");
 
-    // 🔁 restart listening
-    if (isListening) {
-        setTimeout(() => recognition.start(), 500);
-    }
-});
+        // 🔁 restart listening
+        if (isListening) {
+            setTimeout(() => recognition.start(), 500);
+        }
+    });
 
 
     const toggleListening = () => {
@@ -157,9 +152,8 @@ export default function AgentPanel() {
         clearSession();
 
         setMessages([
-            { role: "agent", message: "Hi! I'm your ABFRL Assistant. Looking for something specific?" }
+            { role: "agent", message: "Hi! I'm your ABFRL Assistant. Looking for something specific?", products: [] }
         ]);
-        setDisplayedProducts([]);
         setIsTyping(false);
         setIsListening(false);
         setInputMode("text");
@@ -187,19 +181,21 @@ export default function AgentPanel() {
             {/* CHAT */}
             <Box sx={{ flexGrow: 1, overflowY: "auto", p: 2 }}>
                 {messages.map((msg, i) => (
-                    <MessageBubble key={i} message={msg.message} role={msg.role} />
-                ))}
+                    <Box key={i} mb={2}>
+                        <MessageBubble message={msg.message} role={msg.role} />
 
-                {displayedProducts.length > 0 && (
-                    <Box mt={2}>
-                        <Typography variant="caption" sx={{ color: "gold" }}>
-                            Recommended Products
-                        </Typography>
-                        {displayedProducts.map((p) => (
-                            <ProductCard key={p.sku} product={p} compact />
-                        ))}
+                        {msg.products?.length > 0 && (
+                            <Box mt={1}>
+                                <Typography variant="caption" sx={{ color: "gold" }}>
+                                    Recommended Products
+                                </Typography>
+                                {msg.products.map((p) => (
+                                    <ProductCard key={p.sku} product={p} compact />
+                                ))}
+                            </Box>
+                        )}
                     </Box>
-                )}
+                ))}
 
                 {isTyping && (
                     <Typography variant="caption" sx={{ color: "#888" }}>
