@@ -7,31 +7,32 @@ export class VoiceAdapter {
     this.synth = window.speechSynthesis;
     this.recognition = null;
 
-    if ("webkitSpeechRecognition" in window) {
-      this.recognition = new webkitSpeechRecognition();
-      this.recognition.continuous = false;
-      this.recognition.interimResults = false;
-      this.recognition.lang = "en-US";
+    // CONFLICT FIX: Removed internal SpeechRecognition to avoid fighting with React hook
+    // if ("webkitSpeechRecognition" in window) {
+    //   this.recognition = new webkitSpeechRecognition();
+    //   this.recognition.continuous = false;
+    //   this.recognition.interimResults = false;
+    //   this.recognition.lang = "en-US";
 
-      this.recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        this.onTranscription(transcript);
-      };
+    //   this.recognition.onresult = (event) => {
+    //     const transcript = event.results[0][0].transcript;
+    //     this.onTranscription(transcript);
+    //   };
 
-      this.recognition.onerror = (event) => {
-        console.error("Voice recognition error:", event.error);
-      };
-    } else {
-      alert("Your browser does not support speech recognition.");
-    }
+    //   this.recognition.onerror = (event) => {
+    //     console.error("Voice recognition error:", event.error);
+    //   };
+    // } else {
+    //   alert("Your browser does not support speech recognition.");
+    // }
   }
 
   startListening() {
-    if (this.recognition) this.recognition.start();
+    // if (this.recognition) this.recognition.start();
   }
 
   stopListening() {
-    if (this.recognition) this.recognition.stop();
+    // if (this.recognition) this.recognition.stop();
   }
 
   speak(text) {
