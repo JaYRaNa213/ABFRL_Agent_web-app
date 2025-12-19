@@ -35,7 +35,9 @@ We propose an **Agentic AI Architecture** where a central **Sales Agent** orches
 
 ---
 
-<img src="" > 
+<img src="https://github.com/JaYRaNa213/ABFRL_Agent_web-app/blob/main/public/voice_chat.PNG" > 
+<img src="https://github.com/JaYRaNa213/ABFRL_Agent_web-app/blob/main/public/text_chat.PNG"  > 
+
 
 ## 🧠 Agentic Architecture
 ```
@@ -253,3 +255,4 @@ If you want next, I can:
 - Prepare a **live demo narration script**
 
 Just tell me 👉 **next step**
+
