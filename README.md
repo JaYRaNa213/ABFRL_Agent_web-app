@@ -34,8 +34,11 @@ We propose an **Agentic AI Architecture** where a central **Sales Agent** orches
 - Intelligent post-purchase engagement
 
 ---
-
+ ## Agent + Web app (voice chat)
+ 
 <img src="https://github.com/JaYRaNa213/ABFRL_Agent_web-app/blob/main/public/voice_chat.PNG" > 
+
+## Agent + Web app ( text chat )
 <img src="https://github.com/JaYRaNa213/ABFRL_Agent_web-app/blob/main/public/text_chat.PNG"  > 
 
 
@@ -255,4 +258,5 @@ If you want next, I can:
 - Prepare a **live demo narration script**
 
 Just tell me 👉 **next step**
+
 
